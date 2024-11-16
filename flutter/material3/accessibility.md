@@ -305,4 +305,98 @@ FocusTraversalGroup(
 );
 ```
 
-These features enable comprehensive accessibility across Flutter platforms.
+## Cases for Using Semantics Instead of Defaults
+
+**Decorative or Non-Interactive Widgets**  
+When a widget is purely decorative and does not convey meaningful information, you can exclude it from semantics to avoid unnecessary clutter for assistive technologies.
+
+```dart
+ExcludeSemantics(
+  child: Icon(Icons.star),
+);
+```
+
+**Custom Labels**  
+If the default semantics do not adequately describe a widget’s purpose, you can provide a custom label to better convey its meaning.
+
+```dart
+Semantics(
+  label: 'Back to home',
+  child: Icon(Icons.arrow_back),
+);
+```
+
+**Custom Gestures or Actions**  
+For widgets with custom gestures or actions that need to be made accessible, you can define semantic actions manually.
+
+```dart
+Semantics(
+  label: 'Custom button',
+  onTap: () => print('Tapped'),
+  child: Container(
+    color: Colors.blue,
+    child: Text('Custom Button'),
+  ),
+);
+```
+
+**Complex Widget Compositions**  
+When multiple widgets are visually grouped but should be treated as a single logical element by assistive technologies, you can use `MergeSemantics`.
+
+```dart
+MergeSemantics(
+  child: Row(
+    children: [
+      Icon(Icons.access_time),
+      Text('2:30 PM'),
+    ],
+  ),
+);
+```
+
+**Dynamic Content**  
+For widgets whose semantics change dynamically based on state, you can update the semantics programmatically.
+
+```dart
+Semantics(
+  label: isMuted ? 'Unmute' : 'Mute',
+  child: Icon(isMuted ? Icons.volume_off : Icons.volume_up),
+);
+```
+
+**Widgets Without Built-in Semantics**  
+Custom widgets, such as those built with `CustomPaint` or `Canvas`, often lack built-in semantics. You can provide meaningful accessibility information manually.
+
+```dart
+Semantics(
+  label: 'Custom progress indicator at 50%',
+  child: CustomPaint(
+    painter: MyCustomPainter(),
+  ),
+);
+```
+
+**Semantic Annotations for Testing**  
+When testing requires explicitly defined semantics to identify and interact with widgets, you can override or add semantics.
+
+```dart
+Semantics(
+  label: 'Submit form button',
+  child: ElevatedButton(onPressed: () {}, child: Icon(Icons.send)),
+);
+```
+
+**Accessibility Hints or Descriptions**  
+To provide additional context or instructions for interactive widgets, use `hint` or `description` properties.
+
+```dart
+Semantics(
+  label: 'Save',
+  hint: 'Saves the current document',
+  child: Icon(Icons.save),
+);
+```
+
+### When Not to Use Semantics
+
+Avoid using `Semantics` for standard Material or Cupertino widgets that already have sufficient built-in accessibility. Use it only when customization or fine-grained control is necessary.
