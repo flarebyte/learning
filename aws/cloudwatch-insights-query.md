@@ -153,104 +153,131 @@ The `filter` DSL is both intuitive and expressive, making it easy to refine and 
 
 ## Less Known Operators in CloudWatch Logs Insights:
 
-### `in` Operator  
-   The `in` operator checks if a field matches any value in a specified list. This is particularly useful for filtering against multiple values without repeating conditions.
-   ```sql
-   filter statusCode in [200, 201, 202]
-   ```
-   Equivalent to:
-   ```sql
-   filter statusCode = 200 or statusCode = 201 or statusCode = 202
-   ```
+### `in` Operator
 
----
+The `in` operator checks if a field matches any value in a specified list. This is particularly useful for filtering against multiple values without repeating conditions.
 
-### `exists` Operator  
-   This operator checks if a field is present in the log event. It’s handy for filtering logs where certain keys may or may not exist.
-   ```sql
-   filter exists(responseTime)
-   ```
-   Negation:
-   ```sql
-   filter not exists(errorCode)
-   ```
+```sql
+filter statusCode in [200, 201, 202]
+```
+
+Equivalent to:
+
+```sql
+filter statusCode = 200 or statusCode = 201 or statusCode = 202
+```
+
+### `exists` Operator
+
+This operator checks if a field is present in the log event. It’s handy for filtering logs where certain keys may or may not exist.
+
+```sql
+filter exists(responseTime)
+```
+
+Negation:
+
+```sql
+filter not exists(errorCode)
+```
 
 ### `matches` Operator
-   Similar to regex matching, the `matches` operator evaluates if a field matches a specific pattern or regular expression.
-   ```sql
-   filter requestPath matches "^/api/v[1-9]/.*"
-   ```
+
+Similar to regex matching, the `matches` operator evaluates if a field matches a specific pattern or regular expression.
+
+```sql
+filter requestPath matches "^/api/v[1-9]/.*"
+```
 
 ### `startswith` and `endswith`
-   These operators are used for prefix or suffix matching in strings.
-   - **`startswith`**: Matches if a field starts with the specified string.
-     ```sql
-     filter @message startswith "ERROR"
-     ```
-   - **`endswith`**: Matches if a field ends with the specified string.
-     ```sql
-     filter @message endswith ".jpg"
-     ```
+
+These operators are used for prefix or suffix matching in strings.
+
+- **`startswith`**: Matches if a field starts with the specified string.
+  ```sql
+  filter @message startswith "ERROR"
+  ```
+- **`endswith`**: Matches if a field ends with the specified string.
+  ```sql
+  filter @message endswith ".jpg"
+  ```
 
 ### `case-sensitive` Option
-   The `case-sensitive` flag can modify the behavior of string matching operators like `like`, `not like`, and regex. By default, string matching is case-sensitive, but users can explicitly enable or disable it:
-   ```sql
-   filter @message like "error" case-sensitive = false
-   ```
+
+The `case-sensitive` flag can modify the behavior of string matching operators like `like`, `not like`, and regex. By default, string matching is case-sensitive, but users can explicitly enable or disable it:
+
+```sql
+filter @message like "error" case-sensitive = false
+```
 
 ### Wildcards in Strings (`*`)
-   In some cases, wildcard matching (`*`) is supported for partial matches within fields or strings.
-   ```sql
-   filter requestPath like "/api/*/users"
-   ```
 
-### is null` and `is not null`
-   These operators allow for explicit null checks on fields.
-   ```sql
-   filter userId is not null
-   ```
-   Equivalent to:
-   ```sql
-   filter exists(userId)
-   ```
+In some cases, wildcard matching (`*`) is supported for partial matches within fields or strings.
+
+```sql
+filter requestPath like "/api/*/users"
+```
+
+### is null`and`is not null`
+
+These operators allow for explicit null checks on fields.
+
+```sql
+filter userId is not null
+```
+
+Equivalent to:
+
+```sql
+filter exists(userId)
+```
 
 ### `between` Operator
-   The `between` operator is used for specifying a range of values for numeric fields.
-   ```sql
-   filter requestTime between (1000, 2000)
-   ```
+
+The `between` operator is used for specifying a range of values for numeric fields.
+
+```sql
+filter requestTime between (1000, 2000)
+```
 
 ### `contains` and `not contains`
-   These operators check for substring presence in unstructured text or arrays.
-   ```sql
-   filter @message contains "database connection"
-   filter @message not contains "DEBUG"
-   ```
+
+These operators check for substring presence in unstructured text or arrays.
+
+```sql
+filter @message contains "database connection"
+filter @message not contains "DEBUG"
+```
 
 ## Array and List Handling
-   For logs containing arrays or lists, the query language allows checks like membership or size:
-   - Membership:
-     ```sql
-     filter "admin" in userRoles
-     ```
-   - Length check:
-     ```sql
-     filter arrayLength(tags) > 3
-     ```
+
+For logs containing arrays or lists, the query language allows checks like membership or size:
+
+- Membership:
+  ```sql
+  filter "admin" in userRoles
+  ```
+- Length check:
+  ```sql
+  filter arrayLength(tags) > 3
+  ```
 
 ### Example Queries Using Less Known Operators:
 
 1. Logs where the `@message` starts with "ERROR" and ends with ".json":
+
    ```sql
    filter @message startswith "ERROR" and @message endswith ".json"
    ```
 
 2. Logs for HTTP status codes between 400 and 499:
+
    ```sql
    filter statusCode between (400, 499)
    ```
 
 3. Logs where a specific tag exists in the log event:
+
    ```sql
    filter exists(environment) and environment = "production"
    ```
@@ -261,3 +288,132 @@ The `filter` DSL is both intuitive and expressive, making it easy to refine and 
    ```
 
 These lesser-known operators add versatility to CloudWatch Logs Insights, enabling users to perform more sophisticated and precise log analysis. By combining these operators with basic filtering capabilities, users can achieve fine-grained control over log queries.
+
+## Data types
+
+Amazon CloudWatch Logs Insights natively understands and processes several data types for fields, enabling efficient querying, filtering, and aggregation of log data. Below are the primary types that are recognized and supported:
+
+### Strings
+
+- **Description**: Any sequence of characters enclosed in quotes or as part of a log message. Strings are the default type for unstructured data.
+- **Use Cases**: Searching, substring matching, and regex operations.
+- **Example Operations**:
+  - Exact match:
+    ```sql
+    filter userName = "Alice"
+    ```
+  - Substring search:
+    ```sql
+    filter @message like "ERROR"
+    ```
+
+### Numbers
+
+- **Description**: Numeric values, either integers or floating-point numbers. These are automatically recognized if they appear as standalone values or in structured data.
+- **Use Cases**: Comparisons, aggregations, and calculations.
+- **Example Operations**:
+  - Numeric comparison:
+    ```sql
+    filter responseTime > 1000
+    ```
+  - Aggregation:
+    ```sql
+    stats avg(responseTime) as avgResponseTime
+    ```
+
+### Booleans
+
+- **Description**: Logical values represented as `true` or `false`. These are typically found in structured logs.
+- **Use Cases**: Filtering based on binary states.
+- **Example Operations**:
+  - Boolean check:
+    ```sql
+    filter isError = true
+    ```
+
+### Timestamps (Dates/Times)
+
+- **Description**: Log event timestamps in ISO 8601 or other standard date-time formats. The field `@timestamp` is automatically recognized as a datetime value.
+- **Use Cases**: Time-based filtering, sorting, and aggregation.
+- **Example Operations**:
+  - Date comparison:
+    ```sql
+    filter @timestamp > "2024-12-01T00:00:00Z"
+    ```
+  - Aggregation by time:
+    ```sql
+    stats count() by bin(1h)
+    ```
+
+### IP Addresses
+
+- **Description**: IPv4 or IPv6 addresses, recognized in structured or unstructured log data.
+- **Use Cases**: Filtering or grouping by source/destination IP addresses.
+- **Example Operations**:
+  - Exact match:
+    ```sql
+    filter sourceIP = "192.168.1.1"
+    ```
+  - Regex matching:
+    ```sql
+    filter @message =~ /sourceIP:\s*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/
+    ```
+
+### Arrays (Lists)
+
+- **Description**: Lists or arrays of values, typically found in structured logs (e.g., JSON).
+- **Use Cases**: Checking for membership or size of arrays.
+- **Example Operations**:
+  - Membership check:
+    ```sql
+    filter "admin" in roles
+    ```
+  - Array length:
+    ```sql
+    filter arrayLength(tags) > 3
+    ```
+
+### JSON Objects (Nested Data)
+
+- **Description**: Structured key-value pairs or nested JSON objects. Individual fields can be extracted and queried.
+- **Use Cases**: Accessing nested fields for filtering and aggregation.
+- **Example Operations**:
+  - Parsing and filtering:
+    ```sql
+    parse @message '{"userId":"*", "action":"*"}' as userId, action
+    filter userId = "12345"
+    ```
+
+### URLs (and Text Patterns)
+
+- **Description**: Recognized as strings but often matched using patterns or regex to identify URLs or specific formats.
+- **Use Cases**: Filtering or parsing fields that store URLs or paths.
+- **Example Operations**:
+  - Exact URL match:
+    ```sql
+    filter requestURL = "https://example.com/api"
+    ```
+  - Regex match for paths:
+    ```sql
+    filter requestPath =~ "/api/v[1-9]/.*"
+    ```
+
+### Null Values
+
+- **Description**: Absence of a value in a field.
+- **Use Cases**: Checking for missing or undefined fields.
+- **Example Operations**:
+  - Null check:
+    ```sql
+    filter userId is not null
+    ```
+  - Negation:
+    ```sql
+    filter not exists(errorCode)
+    ```
+
+### Native Parsing and Handling of Types:
+
+CloudWatch Logs Insights natively detects and processes these types if the data is structured (e.g., JSON, key-value pairs). For unstructured logs, you can use **`parse`** or **`extract`** to explicitly define and manipulate fields for specific types.
+
+By understanding these native types, you can craft more precise and efficient queries, leveraging the full power of CloudWatch Logs Insights for your log analysis needs.
