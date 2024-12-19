@@ -159,3 +159,147 @@ void main() {
 
 - `DateTime` comparisons respect time zones. Convert to UTC (`.toUtc()`) if the dates have different time zones.
 - Use `difference` for more granular comparisons (e.g., duration between dates).
+
+## Duration
+
+In Dart, you can add or subtract time from a `DateTime` instance using the `add` and `subtract` methods. These methods take a `Duration` object as input.
+
+### Adding Time
+
+Use the `add` method to add a `Duration` to a `DateTime`:
+
+```dart
+void main() {
+  DateTime initialDate = DateTime(2023, 12, 19, 10, 0);
+
+  // Add 5 days, 3 hours, and 30 minutes
+  DateTime newDate = initialDate.add(Duration(days: 5, hours: 3, minutes: 30));
+  print(newDate); // 2023-12-24 13:30:00.000
+}
+```
+
+### Subtracting Time
+
+Use the `subtract` method to subtract a `Duration` from a `DateTime`:
+
+```dart
+void main() {
+  DateTime initialDate = DateTime(2023, 12, 19, 10, 0);
+
+  // Subtract 2 days and 12 hours
+  DateTime newDate = initialDate.subtract(Duration(days: 2, hours: 12));
+  print(newDate); // 2023-12-16 22:00:00.000
+}
+```
+
+### Creating Durations
+
+A `Duration` object can represent a range of time using various units:
+
+- `days`
+- `hours`
+- `minutes`
+- `seconds`
+- `milliseconds`
+- `microseconds`
+
+### Example: Add and Remove Time Ranges
+
+```dart
+void main() {
+  DateTime date = DateTime(2023, 12, 19, 10, 0);
+
+  // Add 1 week
+  DateTime plusOneWeek = date.add(Duration(days: 7));
+  print(plusOneWeek); // 2023-12-26 10:00:00.000
+
+  // Subtract 3 hours and 45 minutes
+  DateTime minusTime = date.subtract(Duration(hours: 3, minutes: 45));
+  print(minusTime); // 2023-12-19 06:15:00.000
+}
+```
+
+### Notes
+
+- The `Duration` class does not support months or years because their lengths vary.
+- To add or subtract months or years, manually adjust the `DateTime` fields:
+
+  ```dart
+  void main() {
+    DateTime date = DateTime(2023, 12, 19);
+
+    // Add 1 month
+    DateTime nextMonth = DateTime(date.year, date.month + 1, date.day);
+    print(nextMonth); // 2024-01-19
+
+    // Subtract 1 year
+    DateTime lastYear = DateTime(date.year - 1, date.month, date.day);
+    print(lastYear); // 2022-12-19
+  }
+  ```
+
+- When working with time zones, ensure consistency using `.toUtc()` or `.toLocal()` before performing calculations.
+
+To represent a `Duration` as a string, parse it, and print it, you can use custom logic since Dart does not natively provide a `Duration` string format or parser. Here's how you can do it:
+
+---
+
+### Representing `Duration` as a String
+
+A common way is to represent it in `hh:mm:ss` format.
+
+```dart
+String durationToString(Duration duration) {
+  String twoDigits(int n) => n.toString().padLeft(2, '0');
+  String hours = twoDigits(duration.inHours);
+  String minutes = twoDigits(duration.inMinutes.remainder(60));
+  String seconds = twoDigits(duration.inSeconds.remainder(60));
+  return '$hours:$minutes:$seconds';
+}
+```
+
+---
+
+### Parsing a String to `Duration`
+
+You can create a function to parse a string in the `hh:mm:ss` format.
+
+```dart
+Duration stringToDuration(String durationString) {
+  List<String> parts = durationString.split(':');
+  if (parts.length != 3) {
+    throw FormatException('Invalid duration format. Use hh:mm:ss');
+  }
+  int hours = int.parse(parts[0]);
+  int minutes = int.parse(parts[1]);
+  int seconds = int.parse(parts[2]);
+  return Duration(hours: hours, minutes: minutes, seconds: seconds);
+}
+```
+
+---
+
+### Example
+
+Combining these two functions:
+
+```dart
+void main() {
+  // Convert Duration to String
+  Duration duration = Duration(hours: 2, minutes: 45, seconds: 30);
+  String durationStr = durationToString(duration);
+  print('Duration as String: $durationStr'); // 02:45:30
+
+  // Parse String back to Duration
+  Duration parsedDuration = stringToDuration('02:45:30');
+  print('Parsed Duration: ${parsedDuration.inSeconds} seconds'); // 9930 seconds
+}
+```
+
+---
+
+### Notes
+
+1. **Input Validation**: Ensure the input string format is valid (e.g., includes only digits and colons).
+2. **Custom Formats**: Modify the `durationToString` or `stringToDuration` to support formats like `mm:ss` or `hh:mm`. Adjust parsing and formatting logic accordingly.
+3. **Edge Cases**: Handle durations exceeding 24 hours or negative durations if needed.
