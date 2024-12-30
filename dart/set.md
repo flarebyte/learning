@@ -71,3 +71,93 @@ void main() {
   print(a.difference(b));   // {1, 2}
 }
 ```
+### Common Set Comparisons
+
+In Dart, **sets** support a variety of comparisons to analyze relationships between two sets, such as testing equality, subset/superset relationships, and shared elements. These comparisons are particularly useful when working with collections where uniqueness and relationships matter.
+
+
+#### 1. **Equality Check**
+Compares two sets to determine if they contain the same elements, irrespective of order.
+```dart
+Set<int> a = {1, 2, 3};
+Set<int> b = {3, 2, 1};
+
+bool isEqual = a == b; // true
+```
+
+#### 2. **Subset Check**
+Determines if all elements of one set are present in another.
+- `isSubsetOf` checks if a set is a subset of another.
+
+```dart
+Set<int> a = {1, 2};
+Set<int> b = {1, 2, 3};
+
+bool isSubset = a.every(b.contains); // true
+```
+
+#### 3. **Superset Check**
+Determines if a set contains all elements of another set.
+- `isSupersetOf` checks if a set is a superset of another.
+
+```dart
+Set<int> a = {1, 2, 3};
+Set<int> b = {2, 3};
+
+bool isSuperset = b.every(a.contains); // true
+```
+
+#### 4. **Disjoint Check**
+Determines if two sets have no elements in common.
+- `isDisjoint` checks if the sets are disjoint.
+
+```dart
+Set<int> a = {1, 2};
+Set<int> b = {3, 4};
+
+bool isDisjoint = a.intersection(b).isEmpty; // true
+```
+
+#### 5. **Union**
+Combines elements from both sets into a single set.
+```dart
+Set<int> a = {1, 2};
+Set<int> b = {2, 3};
+
+Set<int> union = a.union(b); // {1, 2, 3}
+```
+
+#### 6. **Intersection**
+Finds common elements between two sets.
+```dart
+Set<int> a = {1, 2};
+Set<int> b = {2, 3};
+
+Set<int> intersection = a.intersection(b); // {2}
+```
+
+#### 7. **Difference**
+Finds elements in one set that are not in the other.
+```dart
+Set<int> a = {1, 2, 3};
+Set<int> b = {2, 3};
+
+Set<int> difference = a.difference(b); // {1}
+```
+
+### Example: Comprehensive Comparison
+```dart
+void main() {
+  Set<int> a = {1, 2, 3};
+  Set<int> b = {2, 3};
+
+  print(a == b);                        // false
+  print(b.every(a.contains));           // true (b is a subset of a)
+  print(a.every(b.contains));           // false (a is not a subset of b)
+  print(a.intersection(b));             // {2, 3}
+  print(a.difference(b));               // {1}
+  print(a.union(b));                    // {1, 2, 3}
+}
+```
+
+These comparisons provide a robust way to analyze relationships and manipulate sets effectively in Dart.
