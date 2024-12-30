@@ -70,26 +70,7 @@ In Dart, you can compare `DateTime` objects using relational operators and metho
 
 ### Relational Operators
 
-You can use these operators directly to compare two `DateTime` instances:
-
-- `==` for equality
-- `!=` for inequality
-- `<`, `<=` for earlier dates
-- `>`, `>=` for later dates
-
-```dart
-void main() {
-  DateTime date1 = DateTime(2023, 12, 19);
-  DateTime date2 = DateTime(2024, 1, 1);
-
-  print(date1 == date2); // false
-  print(date1 != date2); // true
-  print(date1 < date2);  // true
-  print(date1 > date2);  // false
-  print(date1 <= date2); // true
-  print(date1 >= date2); // false
-}
-```
+Starting from Dart 3.0, the DateTime class no longer supports comparison operators (<, >, <=, >=). This change was made to improve clarity and consistency in the Dart language. Instead of using the operators directly, you now need to use methods like isBefore, isAfter, or isAtSameMomentAs.
 
 ### Methods for Comparison
 
