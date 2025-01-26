@@ -224,3 +224,200 @@ do {
 
 - `walk()`: Creates a cursor for traversal.
 - `gotoFirstChild()`, `gotoNextSibling()`, etc.: Move through the tree.
+
+## Node type
+
+### - `function_declaration`
+
+- Description: Represents a function declaration in the source code.
+- Example Code:
+
+```typescript
+const code = `
+function greet(name: string): string {
+  return 'Hello, ' + name;
+}
+`;
+```
+
+### - `variable_declaration`
+
+- Description: Represents a variable declaration, such as `const`, `let`, or `var`.
+- Example Code:
+
+```typescript
+const code = `
+const greeting: string = 'Hello';
+`;
+```
+
+### - `class_declaration`
+
+- Description: Represents a class declaration, including its name and body.
+- Example Code:
+
+```typescript
+const code = `
+class Greeter {
+  greet(name: string): string {
+    return 'Hello, ' + name;
+  }
+}
+`;
+```
+
+### - `call_expression`
+
+- Description: Represents a function call.
+- Example Code:
+
+```typescript
+const code = `
+greet('Alice');
+`;
+```
+
+### - `if_statement`
+
+- Description: Represents an `if` conditional statement.
+- Example Code:
+
+```typescript
+const code = `
+if (name === 'Alice') {
+  console.log('Hello, Alice');
+}
+`;
+```
+
+### - `for_statement`
+
+- Description: Represents a `for` loop.
+- Example Code:
+
+```typescript
+const code = `
+for (let i = - i < -; i++) {
+  console.log(i);
+}
+`;
+```
+
+### - `return_statement`
+
+- Description: Represents a `return` statement.
+- Example Code:
+
+```typescript
+const code = `
+function greet(name: string): string {
+  return 'Hello, ' + name;
+}
+`;
+```
+
+### - `arrow_function`
+
+- Description: Represents an arrow function.
+- Example Code:
+
+```typescript
+const code = `
+const greet = (name: string): string => {
+  return 'Hello, ' + name;
+};
+`;
+```
+
+### - `expression_statement`
+
+- Description: Represents an expression that is executed as a statement.
+- Example Code:
+
+```typescript
+const code = `
+console.log('Hello, world');
+`;
+```
+
+### -. `import_statement`
+
+- Description: Represents an `import` statement.
+- Example Code:
+
+```typescript
+const code = `
+import { greet } from './utils';
+`;
+```
+
+Here's an explanation and TypeScript examples for node types representing interface declarations, static methods, and enums. These are common in languages like TypeScript, and Tree-sitter's grammar for TypeScript or JavaScript typically provides support for them.
+
+### `interface_declaration`
+
+- Description: Represents an interface declaration, which defines a structure for objects in TypeScript.
+- Example Code:
+
+```typescript
+const code = `
+interface Person {
+  name: string;
+  age: number;
+  greet(): void;
+}
+`;
+```
+
+### - `static_method`
+
+- Description: Represents a static method in a class, which is called on the class itself rather than an instance.
+- Example Code:
+
+```typescript
+const code = `
+class Utils {
+  static add(a: number, b: number): number {
+    return a + b;
+  }
+}
+`;
+
+const classNode = tree.rootNode.firstChild!;
+console.log(classNode.type); // 'class_declaration'
+
+const staticMethodNode = classNode
+  .descendantsOfType("method_definition")
+  .find((node) => node.text.startsWith("static"));
+console.log(staticMethodNode?.type); // 'method_definition'
+console.log(staticMethodNode?.text); // 'static add(a: number, b: number): number { return a + b; }'
+
+const methodName = staticMethodNode?.childForFieldName("name");
+console.log(methodName?.text); // 'add'
+```
+
+### - `enum_declaration`
+
+- Description: Represents an enumeration declaration, which defines a set of named constants.
+- Example Code:
+
+```typescript
+const code = `
+enum Colors {
+  Red = 'RED',
+  Green = 'GREEN',
+  Blue = 'BLUE'
+}
+`;
+
+const enumNode = tree.rootNode.firstChild!;
+console.log(enumNode.type); // 'enum_declaration'
+
+const enumName = enumNode.childForFieldName("name");
+console.log(enumName?.text); // 'Colors'
+
+const enumMembers = enumNode.childForFieldName("body")?.children || [];
+enumMembers.forEach((member) => {
+  console.log(member.type); // 'enum_member'
+  console.log(member.text); // 'Red = "RED"', 'Green = "GREEN"', 'Blue = "BLUE"'
+});
+```
