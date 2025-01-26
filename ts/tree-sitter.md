@@ -225,7 +225,60 @@ do {
 - `walk()`: Creates a cursor for traversal.
 - `gotoFirstChild()`, `gotoNextSibling()`, etc.: Move through the tree.
 
-## Node type
+## Node types
+
+| Node Type                | Description                                                                   |
+| ------------------------ | ----------------------------------------------------------------------------- |
+| `program`                | Represents the root of the syntax tree, containing all top-level constructs.  |
+| `function_declaration`   | A named function declaration with a body.                                     |
+| `variable_declaration`   | Declares one or more variables using `const`, `let`, or `var`.                |
+| `class_declaration`      | Represents a class definition, including its name, methods, and properties.   |
+| `method_definition`      | A method defined inside a class.                                              |
+| `static_method`          | A static method defined inside a class.                                       |
+| `arrow_function`         | Represents an arrow function (`() => {}`).                                    |
+| `if_statement`           | An `if` conditional statement.                                                |
+| `for_statement`          | A `for` loop construct.                                                       |
+| `while_statement`        | A `while` loop construct.                                                     |
+| `do_statement`           | A `do...while` loop construct.                                                |
+| `switch_statement`       | A `switch` statement with multiple cases.                                     |
+| `case_statement`         | A single case inside a `switch` statement.                                    |
+| `return_statement`       | A `return` statement, optionally with a return value.                         |
+| `import_statement`       | Represents an `import` statement for importing modules or files.              |
+| `export_statement`       | Represents an `export` statement for exporting modules or definitions.        |
+| `expression_statement`   | A standalone expression executed as a statement.                              |
+| `call_expression`        | A function call, including its arguments.                                     |
+| `new_expression`         | An instantiation of a class using the `new` keyword.                          |
+| `property_access`        | Represents property access, such as `obj.property`.                           |
+| `assignment_expression`  | Represents an assignment (`=`) operation.                                     |
+| `binary_expression`      | Represents a binary operation (e.g., `+`, `-`, `*`, `/`, `&&`, `              | `). |
+| `unary_expression`       | Represents a unary operation (e.g., `!`, `-`).                                |
+| `ternary_expression`     | Represents a ternary operator (`condition ? expr1 : expr2`).                  |
+| `object_expression`      | Represents an object literal.                                                 |
+| `array_expression`       | Represents an array literal.                                                  |
+| `enum_declaration`       | Represents an enumeration, defining a set of named constants.                 |
+| `interface_declaration`  | Represents an interface declaration.                                          |
+| `type_alias_declaration` | Represents a type alias declaration in TypeScript or Dart.                    |
+| `getter`                 | A getter method in a class or object.                                         |
+| `setter`                 | A setter method in a class or object.                                         |
+| `constructor`            | The constructor method of a class.                                            |
+| `namespace_declaration`  | Represents a namespace definition (TypeScript only).                          |
+| `await_expression`       | Represents an `await` operation inside an asynchronous function.              |
+| `yield_expression`       | Represents a `yield` statement in a generator function.                       |
+| `try_statement`          | A `try...catch` or `try...finally` block.                                     |
+| `catch_clause`           | The `catch` block inside a `try` statement.                                   |
+| `finally_clause`         | The `finally` block inside a `try` statement.                                 |
+| `throw_statement`        | Represents a `throw` statement.                                               |
+| `annotation`             | A metadata annotation (commonly found in Dart).                               |
+| `default_parameter`      | A parameter with a default value in a function or method.                     |
+| `type_parameter`         | A generic type parameter in TypeScript or Dart.                               |
+| `spread_element`         | A spread operator (`...`) used in arrays or objects.                          |
+| `string_literal`         | A string literal (e.g., `"Hello"` or `'World'`).                              |
+| `number_literal`         | A numeric literal (e.g., `42`).                                               |
+| `boolean_literal`        | A boolean literal (`true` or `false`).                                        |
+| `null_literal`           | The `null` literal.                                                           |
+| `undefined`              | The `undefined` value in JavaScript/TypeScript.                               |
+| `field_declaration`      | Represents a field in a Dart class.                                           |
+| `import_prefix`          | A Dart-specific prefix used in imports (e.g., `import 'dart:math' as math;`). |
 
 ### - `function_declaration`
 
