@@ -250,7 +250,7 @@ do {
 | `new_expression`         | An instantiation of a class using the `new` keyword.                          |
 | `property_access`        | Represents property access, such as `obj.property`.                           |
 | `assignment_expression`  | Represents an assignment (`=`) operation.                                     |
-| `binary_expression`      | Represents a binary operation (e.g., `+`, `-`, `*`, `/`, `&&`, `              | `). |
+| `binary_expression`      | Represents a binary operation (e.g., `+`, `-`, `*`, `/`, `&&`, `    `).       |
 | `unary_expression`       | Represents a unary operation (e.g., `!`, `-`).                                |
 | `ternary_expression`     | Represents a ternary operator (`condition ? expr1 : expr2`).                  |
 | `object_expression`      | Represents an object literal.                                                 |
