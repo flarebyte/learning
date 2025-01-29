@@ -193,3 +193,88 @@ The tokenizer might produce:
 - Lookahead: Some tokens require looking ahead (e.g., `==` vs. `=`, `<=` vs. `<`).
 - Buffering: Reading input in chunks instead of character-by-character improves efficiency.
 - Caching: Store common tokens for faster lookup.
+
+## Source regeneration
+
+It is possible to reconstruct the original script from a list of tokens. This process is often called source regeneration or pretty-printing. The key requirement is that the tokenizer must preserve all necessary information, including whitespace and comments.
+
+### Use cases
+
+Reconstructing code from tokens is not always a required feature in a traditional compiler pipeline, but it is used in several areas:
+
+- Code Formatting & Pretty-Printing
+
+  - Tools like ClangFormat (C++) and Black (Python) rely on tokens to reformat code.
+  - The process ensures consistent indentation, spacing, and styling.
+
+- Syntax Highlighting & Code Editors
+
+  - Many IDEs parse code into tokens and reconstruct sections when applying changes.
+  - Enables dynamic code reformatting without altering functionality.
+
+- Minification & Compression
+
+  - JavaScript and CSS minifiers (e.g., UglifyJS, Terser) tokenize source code, remove unnecessary whitespace/comments, and reassemble it into a compact form.
+
+- Code Refactoring Tools
+
+  - Rustfmt, Prettier (JS) take tokenized source, analyze it, and regenerate formatted code.
+
+- Transpilers & Reverse Engineering
+  - Tools like Babel (JS) convert modern JavaScript into older versions by reconstructing code from transformed tokens.
+  - Decompilers regenerate source code from bytecode by creating high-level tokenized representations.
+
+### How Are Comments Managed as Tokens?
+
+Comments are not required for execution, but they are crucial for source reconstruction and documentation. There are several ways to handle them:
+
+#### Storing Comments as Special Tokens
+
+- Assign a token type like `COMMENT` and store the comment text.
+- Example:
+  ```c
+  // This is a comment
+  int x = 5;  /* Another comment */
+  ```
+  Token list:
+  ```
+  [ COMMENT("// This is a comment"),
+    KEYWORD("int"), IDENTIFIER("x"), OPERATOR("="),
+    NUMBER("5"), PUNCTUATION(";"),
+    COMMENT("/* Another comment */")
+  ]
+  ```
+
+#### Attaching Comments to Neighboring Tokens
+
+- Some formatters associate comments with the closest token.
+- Example:
+  ```python
+  a = 5  # This is a comment
+  ```
+  The comment is stored alongside `a = 5`.
+
+#### Ignoring Comments (Compiler Use Case)
+
+- Compilers discard comments since they do not impact execution.
+- But when reconstructing code, missing comments would make the output incomplete.
+
+#### Special Handling for Docstrings
+
+- Some languages treat multi-line comments as docstrings (e.g., Python `"""docstring"""`).
+- These need to be retained as part of the AST for documentation purposes.
+
+### Challenges in Code Regeneration
+
+- Maintaining Formatting
+
+  - If whitespace isn't stored, regenerated code might not match the original.
+  - Solutions: Store indentation and newlines as tokens.
+
+- Placing Comments Correctly
+
+  - Comments can appear inline, before a statement, or inside code blocks.
+  - They must be preserved in the right location.
+
+- Handling Unnecessary Parentheses & Syntax Changes
+  - Some token-based formatters might add or remove redundant parentheses, affecting readability.
