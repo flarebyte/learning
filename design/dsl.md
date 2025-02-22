@@ -278,3 +278,90 @@ Comments are not required for execution, but they are crucial for source reconst
 
 - Handling Unnecessary Parentheses & Syntax Changes
   - Some token-based formatters might add or remove redundant parentheses, affecting readability.
+
+## Formal Grammars (for computational purposes)
+
+- Context-Free Grammars (CFGs):
+  - These are very common, especially in computer science.
+  - They use rules of the form "A → α," where A is a non-terminal symbol and α is a string of terminals and/or non-terminals.
+  - CFGs are used to describe the syntax of programming languages and many aspects of natural languages.
+  - A common notation for CFG's are Backus-Naur Form(BNF) and extended BNF(EBNF).
+- Regular Grammars:
+  - These are simpler than CFGs.
+  - They can be used to describe regular languages, which are recognized by finite automata.
+  - They are often used for tasks like lexical analysis (breaking a text into tokens).
+- Dependency Grammars:-
+  - Instead of phrase structure, dependency grammars focus on the relationships between words in a sentence.
+  - They represent grammatical structure as a set of binary relations (dependencies) between words.
+  - These grammars are very useful for natural language processing tasks.
+
+When describing the syntax of Context-Free Grammars (CFGs), it's important to understand the core components and how they're typically represented. Here's a breakdown:
+
+## Core Components of a CFG
+
+- Terminal Symbols (Σ):
+  - These are the basic symbols of the language, the "alphabet" from which strings are formed.
+  - Think of them as the actual characters or tokens that appear in the final strings of the language.
+  - Often represented by lowercase letters (a, b, c), digits (0, 1, 2), or special symbols (+, -, \*, /).
+- Non-terminal Symbols (V):
+  - These are variables or placeholders that represent syntactic categories.
+  - They are used to define the structure of the language.
+  - Often represented by uppercase letters (A, B, S) or descriptive names (<expression>, <sentence>).
+- Production Rules (P):
+  - These rules define how non-terminal symbols can be replaced by other symbols (terminal or non-terminal).
+  - They have the form: A → α, where:
+    - A is a non-terminal symbol.
+    - α is a string of terminal and/or non-terminal symbols.
+  - The "→" symbol means "can be replaced by."
+- Start Symbol (S):
+  - This is a special non-terminal symbol that represents the root of the grammar.
+  - The generation of strings in the language starts with the start symbol.
+
+### Typical Syntax and Notation
+
+- Formal Definition:
+  - A CFG is formally defined as a 4-tuple: G = (V, Σ, P, S).
+- Production Rule Notation:
+  - The most fundamental syntax is the production rule: A → α.
+  - When a non-terminal has multiple possible replacements, they are often combined using the "or" symbol (|). For example: A → α | β, which means "A can be replaced by α or β."
+- Backus-Naur Form (BNF) and Extended BNF (EBNF):
+  - These are commonly used notations for representing CFGs, especially in computer science.
+  - BNF:
+    - Uses "::=" instead of "→" to define production rules.
+    - Non-terminals are often enclosed in angle brackets (< >).
+  - EBNF:
+    - Extends BNF with additional symbols for repetition, optional elements, and grouping.
+    - This makes it more concise and easier to read.
+
+Example for a `boolean` language:
+
+```bnf
+<expression> ::= <term> | <expression> "or" <term>
+<term> ::= <factor> | <term> "and" <factor>
+<factor> ::= <variable> | "not" <factor> | "(" <expression> ")"
+<variable> ::= "a" | "b" | "c" | "d"  // Add more variables as needed
+```
+
+**Explanation:**
+
+- `<expression>`:
+  - Represents the overall boolean expression.
+  - It can be a `<term>` or a combination of two expressions joined by the "or" operator. This defines the **lowest precedence** operator.
+- `<term>`:
+  - Represents a boolean term.
+  - It can be a `<factor>` or a combination of two terms joined by the "and" operator. This defines the **middle precedence** operator.
+- `<factor>`:
+  - Represents a **single** boolean factor.
+  - It can be a `<variable>`, a "not" operator followed by a factor, or an expression enclosed in parentheses. This defines the **highest precedence** operator.
+- **`<variable>`:**
+  - Represents a boolean variable.
+  - For simplicity, I've listed "a", "b", "c", and "d" as examples.
+
+**Operator Precedence:**
+
+This grammar implicitly defines the operator precedence:
+
+1.  **Parentheses `( )`:** Highest precedence (evaluated first).
+2.  **`not`:** Next highest precedence.
+3.  **`and`:** Middle precedence.
+4.  **`or`:** Lowest precedence (evaluated last).
