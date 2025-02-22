@@ -295,9 +295,9 @@ Comments are not required for execution, but they are crucial for source reconst
   - They represent grammatical structure as a set of binary relations (dependencies) between words.
   - These grammars are very useful for natural language processing tasks.
 
-When describing the syntax of Context-Free Grammars (CFGs), it's important to understand the core components and how they're typically represented. Here's a breakdown:
-
 ## Core Components of a CFG
+
+When describing the syntax of Context-Free Grammars (CFGs), it's important to understand the core components and how they're typically represented. Here's a breakdown:
 
 - Terminal Symbols (Σ):
   - These are the basic symbols of the language, the "alphabet" from which strings are formed.
@@ -365,3 +365,55 @@ This grammar implicitly defines the operator precedence:
 2.  **`not`:** Next highest precedence.
 3.  **`and`:** Middle precedence.
 4.  **`or`:** Lowest precedence (evaluated last).
+
+## Top-down parsing
+
+Top-down parsing is a parsing strategy that constructs the parse tree from the top, starting with the start symbol, and working down to the leaves. Here's a breakdown of the common types:
+
+- Recursive Descent Parsing:
+  - This is a straightforward top-down parsing technique that uses a set of recursive procedures to process the input.
+  - Each procedure corresponds to a non-terminal symbol in the grammar.
+  - It can involve backtracking, meaning if a choice doesn't lead to a successful parse, the parser may need to go back and try another option.
+- Predictive Parsing (LL Parsing):
+  - This is a type of recursive descent parsing that does not require backtracking.
+  - It uses a lookahead symbol to predict which production rule to apply.
+  - LL parsers are often table-driven, using a parsing table to guide the parsing process.
+  - A common type is LL(1), where "1" indicates that it uses one lookahead symbol.
+- LL(k) Parsers:
+  - These are a generalization of LL parsers, where "k" represents the number of lookahead symbols used. LL(1) is the most commonly used, as using more lookahead symbols increases complexity.
+
+Key Characteristics of Top-Down Parsers:
+
+- They construct the parse tree from the root to the leaves.
+- They typically perform a leftmost derivation.
+- They can have issues with left-recursive grammars.
+
+When deciding between the common types of top-down parsers, especially recursive descent and LL parsers, several factors come into play. Here's a breakdown of the key considerations:
+
+### Grammar Characteristics:
+
+- Left Recursion:
+  - Recursive descent parsers (in their basic form) struggle with left-recursive grammars. These grammars have rules where a non-terminal symbol can start with itself, leading to infinite recursion.
+  - LL parsers also cannot directly handle left recursion. Therefore, grammars need to be transformed to eliminate left recursion before using these parsers.
+- Ambiguity:
+  - Both recursive descent and LL parsers can have difficulties with ambiguous grammars, where a single input string can have multiple parse trees.
+  - LL(1) parsers, in particular, require unambiguous grammars.
+- Grammar Complexity:
+  - Simple grammars are well-suited for recursive descent parsers, especially if you're writing a parser by hand.
+  - More complex grammars might necessitate the use of LL parsers, often with the aid of parser generators.
+  - LL(1) parsers are restricted to grammars that fulfil the LL(1) condition.
+
+### Parsing Requirements:
+
+- Backtracking:
+  - Basic recursive descent parsers may involve backtracking, which can significantly impact performance.
+  - LL parsers are designed to be predictive, avoiding backtracking, which makes them more efficient.
+- Lookahead:
+  - LL parsers rely on lookahead symbols to make parsing decisions. LL(1) parsers use one lookahead symbol, while LL(k) parsers use k lookahead symbols.
+  - The amount of lookahead required can influence the complexity of the parser.
+- Implementation Effort:
+  - Recursive descent parsers can be relatively easy to implement manually, especially for simple grammars.
+  - LL parsers often involve constructing parsing tables, which can be more complex. Parser generators can automate this process.
+- Performance:
+  - LL parsers, particularly LL(1), are generally more efficient due to their predictive nature and lack of backtracking.
+  - Recursive descent parsers can be less efficient, especially with grammars that require extensive backtracking.
