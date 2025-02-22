@@ -342,6 +342,19 @@ Example for a `boolean` language:
 <variable> ::= "a" | "b" | "c" | "d"  // Add more variables as needed
 ```
 
+Without left recursion, to be compatible with most common top down parsers (LL(1) parsing or recursive descent.)
+
+```bnf
+<expression> ::= <term> <expression'>
+<expression'> ::= "or" <term> <expression'> | ε
+<term> ::= <factor> <term'>
+<term'> ::= "and" <factor> <term'> | ε
+<factor> ::= <variable> | "not" <factor> | "(" <expression> ")"
+<variable> ::= "a" | "b" | "c" | "d"
+```
+
+Where ε represents the empty string.
+
 **Explanation:**
 
 - `<expression>`:
