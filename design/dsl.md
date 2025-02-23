@@ -430,3 +430,63 @@ When deciding between the common types of top-down parsers, especially recursive
 - Performance:
   - LL parsers, particularly LL(1), are generally more efficient due to their predictive nature and lack of backtracking.
   - Recursive descent parsers can be less efficient, especially with grammars that require extensive backtracking.
+
+### Identification of Recursive descent vs LL(1)
+
+**Recursive descent parser**:
+
+- If you see functions like parseExpression(), parseTerm(), and parseFactor() that call each other, it's a strong indication of **recursive descent**.
+- **Recursive descent** parsers tend to closely mirror the grammar's production rules in their code. You'll often see if and switch statements that directly correspond to the choices in the grammar.
+- If the code includes logic to "rewind" or "retry" parsing different alternatives, it suggests a basic **recursive descent** parser that might involve backtracking. This is less common in optimized recursive descent or LL(1) implementations.
+- **Implicit Stack**. Recursive descent parsers primarily utilize the call stack of the programming language. When a function corresponding to a non-terminal symbol is called, its activation record is pushed onto the call stack. This record stores information about the function's local variables and the return address. Therefore, **recursive descent effectively uses the call stack as its parsing stack**.
+
+**LL(1)**
+
+- A definitive sign of an LL(1) parser is the presence of a parsing table. This table is typically a two-dimensional array that guides the parsing process based on the current non-terminal and the lookahead symbol.
+- LL(1) parsers are predictive, meaning they make parsing decisions based on a single lookahead symbol. The code will demonstrate clear logic that uses the next token to determine the path of execution, without needing to backtrack.
+- LL(1) parsers are designed to avoid backtracking. Therefore, you won't see code that attempts to "undo" previous parsing decisions.
+- LL(1) parsers will have very clear handling of the next token in the input stream. There will be code that is constantly checking what the next token is, to make decisions.
+- **Explicit Stack (Often)**. LL(1) parsers, especially those that are table-driven, often use an explicit stack. This stack is used to keep track of the symbols that need to be processed. The parsing table and the stack work together to guide the parsing process. The parser pushes and pops symbols from the stack based on the table's entries and the lookahead symbol.
+
+**Recursive descent parsers can be written to be LL(1)**
+
+It's important to understand that a well-written recursive descent parser can adhere to the LL(1) constraints. In such cases, the code might look like recursive descent but behave like an LL(1) parser. A recursive descent parser can be written to behave as an LL(1) parser. In this case, the recursive call stack is doing the work of the explicit stack that is used in table driven LL(1) parsers.
+
+### Parenthesis
+
+Both Recursive Descent and LL(1) parsers handle parentheses in a very similar way, because the core logic is based on following the grammar rules. Here's how they typically deal with parentheses for grouping:
+
+**The Role of Parentheses in Grammars:**
+
+- Parentheses are primarily used to override the default precedence of operators. They explicitly define the order in which expressions should be evaluated.
+- In a BNF grammar, parentheses are treated as terminal symbols (tokens).
+
+**How Parsers Handle Them:**
+
+- Grammar Representation:
+
+  - The BNF grammar itself will include rules that account for parentheses. For example:
+    - `<factor> ::= <variable> | "not" <factor> | "(" <expression> ")"`
+  - This rule indicates that a `<factor>` can be an expression enclosed in parentheses.
+
+- Token Recognition:
+
+  - The lexer (tokenizer) will recognize "(" and ")" as distinct tokens.
+
+- Parsing Logic:
+
+  - Recursive Descent:
+    - When the `parseFactor()` function (or its equivalent) encounters an opening parenthesis "(", it does the following:
+      - Consumes the "(" token.
+      - Calls the `parseExpression()` function recursively to parse the expression inside the parentheses.
+      - Consumes the ")" token.
+    - The recursive call ensures that the expression within the parentheses is parsed as a self-contained unit.
+  - LL(1):
+    - The LL(1) parsing table will have entries for "(" and ")" tokens.
+    - When the parser encounters a "(", the table will direct it to the appropriate production rule (e.g., the one that handles parenthesized expressions).
+    - The parser pushes symbols onto the stack according to the parsing table.
+    - When the parser encounters a ")", the table will direct it to match that closing parenthesis, and continue parsing the rest of the input stream.
+    - Essentially, the parsing table and the stack work together to enforce the correct matching and nesting of parentheses.
+
+- Enforcing Precedence:
+  - By recursively calling the expression parsing function within the parenthesis handling logic, both methods effectively enforce the higher precedence of parenthesized expressions.
