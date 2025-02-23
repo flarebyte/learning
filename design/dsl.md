@@ -490,3 +490,90 @@ Both Recursive Descent and LL(1) parsers handle parentheses in a very similar wa
 
 - Enforcing Precedence:
   - By recursively calling the expression parsing function within the parenthesis handling logic, both methods effectively enforce the higher precedence of parenthesized expressions.
+
+## Parsing table
+
+Creating a full LL(1) parsing table manually can be tedious, but I can provide you with the steps and the general structure, along with some key entries. We'll focus on the core of the grammar:
+
+**Grammar (Simplified):**
+
+```bnf
+<rule> ::= <expr>
+<expr> ::= <term> <expr_tail>
+<expr_tail> ::= and <term> <expr_tail> | or <term> <expr_tail> | ε
+<term> ::= not <term> | ( <expr> ) | <functionCall> | <ruleRef>
+<functionCall> ::= (Predefined function call token)
+<ruleRef> ::= <ruleName>
+<ruleName> ::= <identifier>
+<identifier> ::= ... (Define the identifier syntax here)
+```
+
+### Calculate FIRST and FOLLOW Sets:
+
+- FIRST Sets:
+
+  - `FIRST(<rule>) = FIRST(<expr>)`
+  - `FIRST(<expr>) = FIRST(<term>)`
+  - `FIRST(<term>) = {not, (, functionCall, ruleName}`
+  - `FIRST(<expr_tail>) = {and, or, ε}`
+  - `FIRST(<functionCall>) = {functionCall}` (where functionCall is the token)
+  - `FIRST(<ruleRef>) = FIRST(<ruleName>)`
+  - `FIRST(<ruleName>) = FIRST(<identifier>)`
+  - `FIRST(<identifier>) = {identifier}` (where identifier is the token)
+
+- FOLLOW Sets:
+  - `FOLLOW(<rule>) = {$}` (where $ is the end-of-input marker)
+  - `FOLLOW(<expr>) = {), $}`
+  - `FOLLOW(<expr_tail>) = {), $}`
+  - `FOLLOW(<term>) = {and, or, ), $}`
+  - `FOLLOW(<functionCall>) = {and, or, ), $}`
+  - `FOLLOW(<ruleRef>) = {and, or, ), $}`
+  - `FOLLOW(<ruleName>) = {and, or, ), $}`
+  - `FOLLOW(<identifier>) = {and, or, ), $}`
+
+### Create the Parsing Table:
+
+The parsing table is a 2D array:
+
+- **Rows:** Non-terminals (`<rule>`, `<expr>`, `<expr_tail>`, `<term>`, etc.)
+- **Columns:** Terminals (`not`, `(`, `functionCall`, `ruleName`, `and`, `or`, `)`, `$`)
+
+**Table Structure:**
+
+| Non-terminal     | not | (   | functionCall | ruleName | and | or  | )   | $   |
+| :--------------- | :-- | :-- | :----------- | :------- | :-- | :-- | :-- | :-- |
+| `<rule>`         |     |     |              |          |     |     |     |     |
+| `<expr>`         |     |     |              |          |     |     |     |     |
+| `<expr_tail>`    |     |     |              |          |     |     |     |     |
+| `<term>`         |     |     |              |          |     |     |     |     |
+| `<functionCall>` |     |     |              |          |     |     |     |     |
+| `<ruleRef>`      |     |     |              |          |     |     |     |     |
+| `<ruleName>`     |     |     |              |          |     |     |     |     |
+| `<identifier>`   |     |     |              |          |     |     |     |     |
+
+### Populate the Table:\*\*
+
+- **For each production `A ::= α`:**
+  - **For each terminal `a` in `FIRST(α)`:**
+    - Add `A ::= α` to `Table[A, a]`.
+  - **If `ε` is in `FIRST(α)`:**
+    - **For each terminal `b` in `FOLLOW(A)`:**
+      - Add `A ::= ε` to `Table[A, b]`.
+
+**Partial Table Example:**
+
+| Non-terminal     | not                             | (                               | functionCall                                          | ruleName                        | and                                      | or                                      | )                   | $                   |
+| :--------------- | :------------------------------ | :------------------------------ | :---------------------------------------------------- | :------------------------------ | :--------------------------------------- | :-------------------------------------- | :------------------ | :------------------ |
+| `<rule>`         | `<rule> ::= <expr>`             | `<rule> ::= <expr>`             | `<rule> ::= <expr>`                                   | `<rule> ::= <expr>`             |                                          |                                         |                     |                     |
+| `<expr>`         | `<expr> ::= <term> <expr_tail>` | `<expr> ::= <term> <expr_tail>` | `<expr> ::= <term> <expr_tail>`                       | `<expr> ::= <term> <expr_tail>` |                                          |                                         |                     |                     |
+| `<expr_tail>`    |                                 |                                 |                                                       |                                 | `<expr_tail> ::= and <term> <expr_tail>` | `<expr_tail> ::= or <term> <expr_tail>` | `<expr_tail> ::= ε` | `<expr_tail> ::= ε` |
+| `<term>`         | `<term> ::= not <term>`         | `<term> ::= ( <expr> )`         | `<term> ::= <functionCall>`                           | `<term> ::= <ruleRef>`          |                                          |                                         |                     |                     |
+| `<functionCall>` |                                 |                                 | `<functionCall> ::= (Predefined function call token)` |                                 |                                          |                                         |                     |                     |
+| `<ruleRef>`      |                                 |                                 |                                                       | `<ruleRef> ::= <ruleName>`      |                                          |                                         |                     |                     |
+| `<ruleName>`     |                                 |                                 |                                                       | `<ruleName> ::= <identifier>`   |                                          |                                         |                     |                     |
+| `<identifier>`   |                                 |                                 |                                                       | `<identifier> ::= ...`          |                                          |                                         |                     |                     |
+
+**Important Notes:**
+
+- If any cell in the table has multiple entries, the grammar is not LL(1).
+- The table is used by the parser to determine which production to apply based on the current non-terminal and the next input token.
