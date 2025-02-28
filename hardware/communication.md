@@ -323,3 +323,24 @@ Wireless communication is essential in embedded systems, allowing microcontrolle
 - **For simple, low-cost wireless links** → **nRF24L01 or Sub-GHz RF (HC-12, 433 MHz).**
 
 Each protocol has trade-offs between **range, power, and data rate**, so the best choice depends on the **specific project requirements**.
+
+## Error detection
+
+Here is a detailed comparison table of all the mentioned protocols, evaluating them based on error detection, handshaking, security, speed, range, and multi-device support.
+
+**Protocol Comparison Table**
+
+| Protocol                        | Error Detection         | Handshaking                 | Security                          | Speed            | Range                 | Multi-Device Support              |
+| ------------------------------- | ----------------------- | --------------------------- | --------------------------------- | ---------------- | --------------------- | --------------------------------- |
+| **UART**                        | Parity, Start/Stop bits | None (or RTS/CTS)           | None                              | Up to 1 Mbps     | Short (<15m)          | No                                |
+| **I2C**                         | ACK/NACK                | Start/Stop Conditions       | Weak (SDA/SCL Snooping)           | Up to 3.4 Mbps   | Short (<1m)           | Yes (Multi-Master/Multi-Slave)    |
+| **SPI**                         | None                    | None                        | Weak (No Encryption)              | Several MHz      | Short (<1m)           | Yes (Multi-Slave, needs SS lines) |
+| **RS-232**                      | Parity, Start/Stop bits | RTS/CTS (optional)          | Weak (Plaintext Communication)    | Up to 115.2 kbps | Medium (~15m)         | No                                |
+| **RS-422**                      | Differential Signaling  | Differential Pair Sync      | Moderate (Differential Signaling) | Up to 10 Mbps    | Long (~1200m)         | Yes (1 Master, Multiple Slaves)   |
+| **RS-485**                      | Differential Signaling  | Differential Pair Sync      | Moderate (Differential Signaling) | Up to 10 Mbps    | Long (~1200m)         | Yes (Multi-Master, Multi-Slave)   |
+| **Wi-Fi**                       | CRC, Encryption         | TCP/UDP, Authentication     | Strong (WPA2/WPA3, TLS)           | Up to 1 Gbps     | Medium (~30-100m)     | Yes                               |
+| **Bluetooth (BLE)**             | CRC, AES Encryption     | Pairing, AES Encryption     | Moderate (AES-128 Encryption)     | Up to 2 Mbps     | Short (~10-100m)      | Yes (Mesh, Broadcast)             |
+| **Zigbee**                      | CRC                     | Node Discovery, Routing     | Moderate (AES-based Security)     | 250 kbps         | Short (~10-100m)      | Yes (Mesh, Multi-Hop)             |
+| **LoRa**                        | CRC, FEC                | LoRaWAN Join Procedure      | Strong (AES-128, Network Keys)    | 0.3-50 kbps      | Very Long (~10-15 km) | Yes (LoRaWAN Networks)            |
+| **nRF24L01**                    | None                    | Packet-based Acknowledgment | Weak (No Built-in Encryption)     | Up to 2 Mbps     | Medium (~1 km)        | Yes (Basic Mesh)                  |
+| **Sub-GHz RF (HC-12, 433 MHz)** | None                    | Simple ACK/NACK             | Weak (No Built-in Security)       | 9.6-115.2 kbps   | Medium (~1-5 km)      | Yes (Simple One-to-Many)          |
