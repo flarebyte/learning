@@ -57,3 +57,63 @@ rules = {
 | **Biology/Simulation** | Modeling plant growth, cellular development             |
 | **Art & Design**       | Creating recursive or organic patterns                  |
 | **Education**          | Teaching recursion, algorithms, and emergence           |
+
+## L-System with Graphs (Graph-Based L-System)
+
+### Concept:
+
+Instead of representing the system as a string of characters, we use a **graph** where:
+
+- **Nodes** represent entities (e.g. branches, leaves, junctions).
+- **Edges** represent relationships or connections between entities.
+- **Rules** apply to **subgraphs or nodes** and generate new nodes or modify structure.
+
+This is closer to how real-life growth works (e.g., a plant node splits into branches, not into characters).
+
+## Key Components
+
+| Component       | Description                                                      | Example (Python-ish)                            |
+| --------------- | ---------------------------------------------------------------- | ----------------------------------------------- |
+| `graph`         | The current structure – usually a `dict` or graph object         | `graph[node] = [child1, child2]`                |
+| `node`          | A unit with attributes (like type, age, angle, etc.)             | `{"type": "branch", "length": 2}`               |
+| `rule(node)`    | A function that returns changes (e.g., new nodes or connections) | `if node["type"] == "tip": grow new branches()` |
+| `apply_rules()` | Walk through nodes and apply growth rules                        | Loop over graph, apply rule per node            |
+
+## Example Structure (in pseudo-Python)
+
+```python
+graph = {
+    0: {"type": "root", "children": [1, 2]},
+    1: {"type": "tip", "children": []},
+    2: {"type": "tip", "children": []}
+}
+
+def growth_rule(node_id, graph):
+    node = graph[node_id]
+    if node["type"] == "tip":
+        new_id = max(graph) + 1
+        graph[new_id] = {"type": "tip", "children": []}
+        node["children"].append(new_id)
+        node["type"] = "branch"
+```
+
+Each iteration modifies the graph by **adding nodes** and **updating connections** based on the rules. You can visualize this as a growing tree with nodes branching out.
+
+## Graph L-System Summary
+
+| Feature             | Description                                                             |
+| ------------------- | ----------------------------------------------------------------------- |
+| **Structure Type**  | Graph (nodes + edges) instead of linear strings                         |
+| **Data-rich**       | Nodes can store attributes (age, length, direction, etc.)               |
+| **Flexible Growth** | Growth can occur from multiple points, not just left-to-right           |
+| **Ideal For**       | Trees, biological models, structural modeling, 3D object generation     |
+| **Tools**           | Python + `networkx`, or game engines with graph support (Unity, Unreal) |
+
+## When to Use Graph-Based L-systems
+
+| Use Case                    | Why Graph L-System Works Well                                 |
+| --------------------------- | ------------------------------------------------------------- |
+| **Botanical models**        | Branching structures with rich geometry                       |
+| **3D modeling**             | Handles space-aware node placement and spatial relationships  |
+| **Procedural architecture** | Supports rule-based generation of rooms, hallways, structures |
+| **Biological simulations**  | Cells, organs, or ecosystems with spatial dependency          |
