@@ -125,3 +125,28 @@ results = client.query(
 - **Text embeddings** dominate many apps, but **multimodal and structured data embeddings** are growing fast, especially in research and ML ops.
 - **Multimodal embeddings** open doors for complex AI — e.g., describing an image, searching by sound, or captioning a video.
 - **Biological and scientific embeddings** are a hot area in AI for science (e.g., protein folding, molecule similarity).
+
+## Core Query Types in a Vector Database
+
+| **Query Type**                      | **Description**                                                                                               | **Common Use Cases**                                             |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **K-Nearest Neighbors (KNN)**       | Returns the top `k` vectors closest to a given query vector using a distance metric (e.g., cosine, Euclidean) | Semantic search, recommendations, RAG                            |
+| **Similarity Search**               | Same as KNN, often includes a similarity **threshold** or **distance cutoff**                                 | "Find items similar to X with at least 85% similarity"           |
+| **Filtered Search (Hybrid Search)** | Combines vector similarity with structured filters (metadata constraints like category, date, price)          | “Find tech blog posts similar to this one, published after 2021” |
+| **Multivector / Batch Search**      | Runs multiple queries at once (e.g., batched queries)                                                         | Multi-document retrieval, LLM context building                   |
+| **Score-only Search**               | Returns similarity scores (not just IDs), often for re-ranking or explainability                              | Search result tuning, A/B testing                                |
+| **Reverse Lookup**                  | Given a vector, find if it already exists (or close to it) in the index                                       | Deduplication, update logic                                      |
+| **Vector Arithmetic / Analogy**     | Perform operations like `vec("king") - vec("man") + vec("woman")`                                             | Word analogy tasks, embeddings reasoning (limited support)       |
+| **Upsert / Replace**                | Insert or update a vector and metadata (often atomic)                                                         | Maintaining live index                                           |
+| **Delete by ID or Filter**          | Remove vectors by unique ID or matching metadata                                                              | Index pruning, user data deletion                                |
+| **Get by ID**                       | Retrieve the vector and/or metadata by document ID                                                            | Use in fallback pipelines or audits                              |
+
+## Specialized / Advanced Query Modes
+
+| **Feature**                     | **Purpose**                                             | Supported by                              |
+| ------------------------------- | ------------------------------------------------------- | ----------------------------------------- |
+| **Hybrid Ranking**              | Mix of keyword and vector scores                        | Weaviate, Vespa, Elasticsearch            |
+| **Payload-aware Search**        | Use metadata to adjust scores or routing                | Qdrant, Weaviate                          |
+| **Re-ranking (post retrieval)** | Reorder top-K using another model (e.g., cross-encoder) | Pinecone, LlamaIndex                      |
+| **Geo-aware Search**            | Filter or score vectors by proximity AND location       | Milvus, custom pipelines                  |
+| **Time-windowed Search**        | Filter vector results based on temporal constraints     | Pinecone (metadata filters), custom logic |
