@@ -577,3 +577,107 @@ The parsing table is a 2D array:
 
 - If any cell in the table has multiple entries, the grammar is not LL(1).
 - The table is used by the parser to determine which production to apply based on the current non-terminal and the next input token.
+
+## Programming languages for DSL
+
+### Lisp / Scheme / Racket
+
+**Best for: DSLs, interpreters, macro-based languages**
+
+**Why:**
+
+- **Homoiconicity** – code is data, which makes it easy to manipulate syntax and structure.
+- **Macros** – powerful compile-time metaprogramming lets you define new language constructs easily.
+- **Minimal core** – easy to extend into something much bigger or domain-specific.
+
+**Use Case Example:** Clojure has mini-DSLs for querying data (`clojure.spec`, `core.logic`), and Racket is literally designed to build new languages.
+
+---
+
+### Haskell
+
+**Best for: Typed DSLs, compilers, embedded languages**
+
+**Why:**
+
+- **Strong static typing** – great for building reliable and safe language tooling.
+- **Parser combinators and monads** – perfect for constructing complex parsers.
+- **Purity and abstraction** – makes reasoning about language semantics easier.
+
+**Use Case Example:** Haskell libraries like **Megaparsec** and **Happy** are used to build compilers and interpreters. Elm’s compiler was originally written in Haskell.
+
+---
+
+### Python
+
+**Best for: Rapid prototyping, educational languages, internal DSLs**
+
+**Why:**
+
+- **Readable and expressive syntax** – great for making "mini-languages" people can use easily.
+- **Dynamic typing and eval()** – makes it easy to interpret small bits of code.
+- **Huge ecosystem** – tools like `lark`, `ply`, `ast`, and `antlr` are well-supported.
+
+**Use Case Example:** Many build tools (like Ansible’s YAML + Python mix) and educational languages are prototyped in Python.
+
+---
+
+### Rust
+
+**Best for: Safe, fast interpreters and compilers**
+
+**Why:**
+
+- **Memory safety without a GC** – ideal for low-level language design.
+- **Performance** – nearly C-level performance.
+- **Great compiler-building ecosystem** – libraries like `nom`, `lalrpop`, and `chumsky`.
+
+**Use Case Example:** The **Mun language** and **Dyon** scripting language were built with Rust.
+
+---
+
+### C / C++
+
+**Best for: Low-level languages, performance-critical tools**
+
+**Why:**
+
+- **Control over memory and performance** – essential for building systems languages.
+- **Established** – many famous languages (like Python, Ruby, Lua) have interpreters written in C.
+- **Toolchain support** – works well with existing compilers and platforms.
+
+**Use Case Example:** The original **Lua**, **Python (CPython)**, and even **TinyCC** were written in C.
+
+---
+
+### Java / Kotlin / Scala
+
+**Best for: JVM-based DSLs, tools that need rich ecosystems**
+
+**Why:**
+
+- **Java’s classloader** – great for dynamic languages and plugins.
+- **Mature tooling** – you get IDEs, debuggers, profilers, and cross-platform support.
+- **Kotlin/Scala** – allow cleaner syntax and DSL support (Kotlin especially).
+
+**Use Case Example:** Kotlin is used to build elegant internal DSLs (e.g., Gradle's Kotlin DSL).
+
+---
+
+### Bonus: Special Mention
+
+- **OCaml** – often used for compilers (e.g., ReasonML, Coq) due to strong typing and pattern matching.
+- **Go** – not traditionally used for DSLs, but Go is fast, and tools like `goyacc` or `participle` can help.
+- **JavaScript / TypeScript** – easy to embed scripting DSLs in web apps or tools.
+
+---
+
+### TL;DR – Which to Pick?
+
+| Goal                           | Language Suggestion  |
+| ------------------------------ | -------------------- |
+| Rapid prototyping              | Python, Lisp         |
+| Embedded DSL with strong types | Haskell, Kotlin      |
+| Full-blown compiler            | Rust, Haskell, OCaml |
+| Embedded interpreter           | C, Rust, Go          |
+| Educational language           | Python, Racket, Lisp |
