@@ -40,27 +40,12 @@ For example:
 ## Architecture (Simplified)
 
 ```mermaid
-graph LR
-    A[User Search Query] --> B(Neural Search Plugin);
-    B --> C(Text Embedding Model);
-    C -- Converts Query to Vector --> D[Query Vector Embedding];
-    D --> E(k-NN Plugin);
-    E -- Searches Vector Index --> F["Vector Index (Document Embeddings)"];
-    F -- Finds Nearest Neighbors --> G[Relevant Document Vectors];
-    G --> H(Neural Search Plugin);
-    H -- Retrieves Original Documents --> I[Relevant Search Results];
-    I --> J[User];
-
-    subgraph Indexing Process
-        K[Document] --> L(Ingest Pipeline);
-        L --> M(Text Embedding Processor);
-        M -- Converts Document to Vector --> N[Document Vector Embedding];
-        N --> F;
-    end
-
-    style F stroke:#333,stroke-width:2px
-    style E stroke:#333,stroke-width:2px
-    style C stroke:#333,stroke-width:2px
+flowchart TD
+    A[Client Application] --> B[Embedding Service]
+    B --> C[Vector Database]
+    C --> D[Vector Index and Metadata]
+    D --> E[Similarity Search Results]
+    E --> A
 ```
 
 ## Common Use Cases
