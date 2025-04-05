@@ -150,3 +150,39 @@ results = client.query(
 | **Re-ranking (post retrieval)** | Reorder top-K using another model (e.g., cross-encoder) | Pinecone, LlamaIndex                      |
 | **Geo-aware Search**            | Filter or score vectors by proximity AND location       | Milvus, custom pipelines                  |
 | **Time-windowed Search**        | Filter vector results based on temporal constraints     | Pinecone (metadata filters), custom logic |
+
+## You Can Use Embeddings Without a Vector DB
+
+Embeddings are just **high-dimensional vectors**. You can:
+
+- Compute them
+- Store them (in memory, a file, or a traditional database)
+- Compare them (e.g., cosine similarity, dot product)
+
+### Small-scale example (no vector DB):
+
+```python
+from sklearn.metrics.pairwise import cosine_similarity
+
+query = embed("happy")
+all_vectors = [embed("joyful"), embed("sad"), embed("angry")]
+similarities = cosine_similarity([query], all_vectors)
+
+# Get top match manually
+top_match = words[similarities.argmax()]
+```
+
+## Why Use a Vector Database Then?
+
+When your dataset grows — like **thousands or millions** of vectors — comparing each one with every query becomes **slow and inefficient**.
+
+### Vector DB gives you:
+
+| Feature                                   | Benefit                                                    |
+| ----------------------------------------- | ---------------------------------------------------------- |
+| **ANN Search (Approx. Nearest Neighbor)** | Fast top-K results, even in high dimensions                |
+| **Indexing & scaling**                    | Built for large-scale vector collections                   |
+| **Metadata filtering**                    | Combine structured + semantic search                       |
+| **Production readiness**                  | REST/gRPC APIs, high availability                          |
+| **Live updates (insert/delete)**          | Good for dynamic content (e.g., user uploads)              |
+| **Namespaces & filters**                  | Segment different types of embeddings (e.g., docs vs tags) |
