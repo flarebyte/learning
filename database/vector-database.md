@@ -100,3 +100,28 @@ results = client.query(
 - Embeddings → Stored in Vector DB → Queried via ANN.
 - Excellent for LLM-based apps, search, recommendation systems.
 - Plug into your stack like any other DB, but with an extra pre-processing step (embedding generation).
+
+## Embedding Input Modalities & Their Applications
+
+| **Modality**                  | **Description**                               | **Problems Solved**                                       | **Example Use Cases**                                  | **Example Embedding Models**          |
+| ----------------------------- | --------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------ | ------------------------------------- |
+| **Text**                      | Sentences, documents, paragraphs              | Semantic similarity, classification, search, RAG          | Search engines, chat memory, intent classification     | BERT, SBERT, OpenAI ada, Cohere, e5   |
+| **Code**                      | Source code snippets, functions, entire files | Code search, clone detection, automated documentation     | GitHub Copilot, StackOverflow search, Code QA          | CodeBERT, GraphCodeBERT, OpenAI codex |
+| **Image**                     | Photos, screenshots, drawings                 | Similarity, retrieval, tagging, vision-language alignment | Visual search, auto-tagging, captioning                | CLIP, ResNet, DINO, BLIP              |
+| **Audio**                     | Voice clips, music, environmental sounds      | Speaker recognition, classification, retrieval            | Voice assistants, music search, bioacoustics           | Wav2Vec2, YAMNet, OpenL3              |
+| **Video**                     | Sequences of frames (with/without audio)      | Action recognition, summarization, similarity             | Sports analysis, surveillance, content moderation      | VideoMAE, ViViT, CLIP-ViT             |
+| **Multimodal (Text + Image)** | Joint space for language and vision           | Cross-modal search, captioning, VQA                       | Image captioning, product search ("show me red shoes") | CLIP, BLIP, Flamingo                  |
+| **Multimodal (Text + Audio)** | Maps textual prompts and audio                | Sound-to-text alignment, audio search                     | Podcast search, subtitle generation                    | Whisper, CLAP                         |
+| **Multilingual Text**         | Text across languages                         | Cross-lingual search, translation evaluation              | Global search, language-agnostic RAG                   | LaBSE, LASER, XLM-R                   |
+| **3D Data / Point Clouds**    | Lidar, 3D object meshes                       | Object detection, shape classification                    | Robotics, autonomous vehicles, AR/VR                   | PointNet, DGCNN                       |
+| **Time Series / Sensor Data** | Sequences from IoT, financial, health data    | Forecasting, anomaly detection, similarity                | Predictive maintenance, health monitoring              | TS2Vec, InceptionTime                 |
+| **Tabular Data**              | Structured rows and columns                   | Classification, semantic joins, anomaly detection         | Fraud detection, semantic search in tables             | TabTransformer, FT-Transformer        |
+| **Graphs**                    | Nodes + edges (social, molecular, etc.)       | Node classification, link prediction, clustering          | Social networks, drug discovery                        | Node2Vec, GCN, GraphSAGE              |
+| **DNA / Protein Sequences**   | Biological sequences (genomics, proteomics)   | Functional classification, structure prediction           | Drug discovery, gene similarity                        | ESM, ProtBERT, AlphaFold embeddings   |
+| **Documents (multi-modal)**   | Embedded combinations: title, body, metadata  | Hybrid retrieval, clustering, semantic linking            | Academic search, RAG pipelines                         | BGE, GTR, ColBERT                     |
+
+### Key Takeaways
+
+- **Text embeddings** dominate many apps, but **multimodal and structured data embeddings** are growing fast, especially in research and ML ops.
+- **Multimodal embeddings** open doors for complex AI — e.g., describing an image, searching by sound, or captioning a video.
+- **Biological and scientific embeddings** are a hot area in AI for science (e.g., protein folding, molecule similarity).
