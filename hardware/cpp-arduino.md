@@ -100,3 +100,7 @@ void loop() {
 - **Serial Communication**: Communicate with the PC using `Serial.print()`.
 
 Arduino leverages a **simplified version of C++** tailored for embedded systems. It removes unnecessary complexities while retaining object-oriented features, making it a powerful yet accessible tool for electronics and IoT development.
+
+## Emulators
+
+[ESP32 simulator](https://wokwi.com/)
