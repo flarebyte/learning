@@ -68,3 +68,57 @@ A2                # map of 2 pairs
 | **Dart**                 | `cbor`                                  | Available via `pub.dev`, supports encoding/decoding   |
 | **C/C++**                | `libcbor`, `cn-cbor`, `tinycbor`        | `tinycbor` is popular for embedded systems            |
 | **Rust**                 | `serde_cbor`                            | Built on `serde` for easy (de)serialization           |
+
+### Overview of COSE (CBOR Object Signing and Encryption)
+
+**COSE** stands for **CBOR Object Signing and Encryption**. It is a protocol designed to provide **security services**—like signing, encryption, and message authentication—**using the CBOR data format**.
+
+It’s defined in [RFC 9052](https://datatracker.ietf.org/doc/html/rfc9052) and is conceptually similar to **JOSE** (JSON Object Signing and Encryption), which is used in systems like JWT.
+
+### What Does COSE Do?
+
+COSE allows you to apply security mechanisms to CBOR-encoded data:
+
+- ✅ **Signing** (authentication and integrity)
+- ✅ **Encryption** (confidentiality)
+- ✅ **Message Authentication Codes (MAC)** (integrity + authenticity)
+- ✅ **Key Distribution** (sharing cryptographic keys securely)
+
+It can protect both the **payload** and **metadata** using a compact, CBOR-based structure.
+
+### Main COSE Message Types
+
+| Message Type    | Purpose                                    | RFC Section |
+| --------------- | ------------------------------------------ | ----------- |
+| `COSE_Sign`     | Signed message with multiple signers       | §4          |
+| `COSE_Sign1`    | Signed message with a single signer        | §4.2        |
+| `COSE_Encrypt`  | Encrypted message with multiple recipients | §5          |
+| `COSE_Encrypt0` | Encrypted message for one recipient        | §5.2        |
+| `COSE_Mac`      | Message with a MAC and multiple recipients | §6          |
+| `COSE_Mac0`     | Message with a single MAC recipient        | §6.2        |
+| `COSE_Key`      | Structure to represent public/private keys | §7          |
+
+### COSE vs JOSE
+
+| Feature             | COSE                                          | JOSE               |
+| ------------------- | --------------------------------------------- | ------------------ |
+| Format              | CBOR (binary)                                 | JSON (text)        |
+| Compactness         | More compact (better for constrained devices) | More verbose       |
+| Used in             | IoT, constrained networks                     | Web, API, JWTs     |
+| Security Mechanisms | Sign, Encrypt, MAC                            | Sign, Encrypt, MAC |
+
+### Example Use Cases
+
+- **IoT Devices**: Secure transmission of sensor data
+- **CoAP Protocol**: Used as the security layer for constrained application protocol
+- **Encrypted messaging**
+- **Access tokens** (alternative to JWT)
+
+### Libraries Supporting COSE
+
+| Language   | Library           | Notes                                           |
+| ---------- | ----------------- | ----------------------------------------------- |
+| Python     | `cose` (`pycose`) | Actively maintained, supports all message types |
+| JavaScript | `node-cose`       | Useful in constrained JS environments           |
+| Rust       | `cose` crate      | Lightweight, secure implementations             |
+| C          | `cose-c`          | Reference implementation from IETF group        |
