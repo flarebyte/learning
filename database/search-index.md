@@ -295,3 +295,49 @@ If you go further:
 - **BM25+**, **BM25L**: BM25 tweaks
 - **Learning-to-rank (LTR)**: ML-based ranking (e.g., LambdaMART)
 - **Dense vector models**: Semantic search using embeddings (BERT, OpenAI embeddings)
+
+## What Is a Tokenizer?
+
+A **tokenizer** is the first step in processing text for search.
+
+### What It Does:
+
+- Takes **raw text** and splits it into **tokens** (words or terms).
+- Optionally, performs normalization like lowercasing or removing punctuation.
+
+### Example
+
+Raw text:
+
+```
+"OpenSearch is awesome! Search engines love it."
+```
+
+Basic tokenization might output:
+
+```
+["opensearch", "is", "awesome", "search", "engines", "love", "it"]
+```
+
+More advanced tokenization could also:
+
+- **Lowercase** everything
+- **Remove stop words** (like "is", "it")
+- **Stemming/Lemmatization**: "engines" → "engine"
+
+## Common Tokenizer Types
+
+| Type               | Description                                            |
+| ------------------ | ------------------------------------------------------ |
+| **Whitespace**     | Splits on spaces                                       |
+| **Word**           | Splits on word boundaries (excludes punctuation)       |
+| **N-gram**         | Creates overlapping chunks (e.g., "sea", "ear", "arc") |
+| **Regex-based**    | Fully custom rules (e.g., `\w+`)                       |
+| **Language-aware** | Handles grammar, accents, compound words               |
+
+## When to Use What?
+
+| Language | Use Case                         | Library                             |
+| -------- | -------------------------------- | ----------------------------------- |
+| JS/TS    | Browser-based search / NLP tools | `natural`, `wink-tokenizer`, `lunr` |
+| Go       | Building search/index engines    | `bleve`, `segment`, `gojieba`       |
