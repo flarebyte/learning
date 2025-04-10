@@ -341,3 +341,26 @@ More advanced tokenization could also:
 | -------- | -------------------------------- | ----------------------------------- |
 | JS/TS    | Browser-based search / NLP tools | `natural`, `wink-tokenizer`, `lunr` |
 | Go       | Building search/index engines    | `bleve`, `segment`, `gojieba`       |
+
+| Tokenizer Type         | Returns Positions?            | Returns Frequency?        |
+| ---------------------- | ----------------------------- | ------------------------- |
+| `natural` (JS)         | ❌                            | ❌ (but easy to add)      |
+| `wink-tokenizer` (JS)  | ✅ `offset`, `length`         | ❌                        |
+| `segment` (Go)         | ✅                            | ❌                        |
+| `bleve` analyzers (Go) | ✅ (as part of full pipeline) | ✅ (used during indexing) |
+
+In systems like **Lucene**, **Elasticsearch**, or **Bleve**:
+
+- The tokenizer is part of an **analyzer chain**.
+- It produces tokens with:
+  - **term**
+  - **position**
+  - **start & end char offsets**
+  - **payload** (optional)
+- Frequency is **computed** during indexing (count of how often a term appears per document).
+
+| Feature       | Tokenizer                   | Indexing Stage |
+| ------------- | --------------------------- | -------------- |
+| **Tokens**    | ✅                          | ✅             |
+| **Position**  | Sometimes ✅                | ✅             |
+| **Frequency** | ❌ (usually computed later) | ✅             |
