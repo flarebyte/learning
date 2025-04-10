@@ -113,7 +113,7 @@ Includes:
 | Large-scale, multi-tenant | ❌             | ✅                                                   |
 | NLP/Semantic search       | ❌             | ✅ or combine with vector DB                         |
 
-## TL;DR Summary
+## Summary table
 
 | Component        | MVP            | Advanced                             |
 | ---------------- | -------------- | ------------------------------------ |
@@ -122,3 +122,16 @@ Includes:
 | Language Support | English only   | Multilingual, semantic search        |
 | Security         | Basic auth     | Row-level ACLs, multi-tenancy        |
 | Features         | Term search    | Ranking, fuzzy, autocomplete, facets |
+
+## Side-by-Side Comparison
+
+| Feature                | MVP Search Engine            | OpenSearch                              |
+| ---------------------- | ---------------------------- | --------------------------------------- |
+| Memory usage           | ~100–300 MB                  | Min 2–4 GB (can go 8+ GB easily)        |
+| CPU usage (10 QPS)     | Very low (<10% of 1 core)    | Moderate (depends on scoring, filters)  |
+| Storage footprint      | Tiny (flat files / SQLite)   | Large (index + segment files, replicas) |
+| Complexity             | Very low                     | High (JVM tuning, config, sharding)     |
+| Cost (infra)           | $0–$10/mo                    | $30–$300+/mo                            |
+| Cold start / boot time | Seconds                      | ~20–60s JVM warm-up                     |
+| Throughput (raw)       | Low-medium                   | High (scales with nodes)                |
+| Best for               | Local tools, CLI, small SaaS | Production SaaS, enterprise search      |
