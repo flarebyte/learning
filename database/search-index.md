@@ -135,3 +135,50 @@ Includes:
 | Cold start / boot time | Seconds                      | ~20–60s JVM warm-up                     |
 | Throughput (raw)       | Low-medium                   | High (scales with nodes)                |
 | Best for               | Local tools, CLI, small SaaS | Production SaaS, enterprise search      |
+
+## Inverted Index – Beyond Just Word → Document
+
+At its simplest, an inverted index maps **terms (words)** to **documents** that contain them.  
+But for **ranking, relevance, and advanced queries**, we often store **extra info**:
+
+### Positions
+
+- **What it is:** Where exactly the term appears in the document.
+- **Example:**
+  ```
+  "search index engine" → "index" is the 2nd word
+  ```
+- **Why it matters:**
+  - Enables **phrase search**: `"search index"` matches only if "search" is followed by "index".
+  - Enables **proximity search**: find words near each other (e.g., `"engine search"~3`).
+
+### Term Frequency (TF)
+
+- **What it is:** How many times a word appears in a document.
+- **Example:**
+  ```
+  Doc1: "search search engine" → TF("search") = 2
+  ```
+- **Why it matters:**
+  - Higher frequency often means higher **relevance**.
+  - Used in ranking formulas like **TF-IDF** or **BM25**.
+
+### Inverse Document Frequency (IDF)
+
+- Not stored per document, but computed globally.
+- Rare words (like “neural”) get more weight than common ones (like “the”).
+
+### What It Looks Like (Conceptually)
+
+```json
+"search": [
+  { "doc": 1, "positions": [0, 2], "tf": 2 },
+  { "doc": 2, "positions": [4], "tf": 1 }
+]
+```
+
+| Metadata           | Purpose                     |
+| ------------------ | --------------------------- |
+| **Position**       | Phrase/proximity search     |
+| **Term Frequency** | Relevance scoring           |
+| **Doc Frequency**  | Global rarity (used in IDF) |
