@@ -182,3 +182,116 @@ But for **ranking, relevance, and advanced queries**, we often store **extra inf
 | **Position**       | Phrase/proximity search     |
 | **Term Frequency** | Relevance scoring           |
 | **Doc Frequency**  | Global rarity (used in IDF) |
+
+## What Are Ranking Formulas?
+
+When you search for `"open source engine"`, multiple documents might match.
+
+Ranking formulas **score each document** based on how relevant it is to the query — so you can show the best matches first.
+
+They work using features like:
+
+- How often terms appear
+- How rare terms are across the corpus
+- Document length (shorter might be better)
+- Exact vs fuzzy matches
+
+## TF-IDF (Term Frequency – Inverse Document Frequency)
+
+### Intuition
+
+- Words that appear **a lot** in a document = likely important (**TF**)
+- But if they appear **everywhere**, they aren’t helpful (**IDF** penalizes common words)
+
+### Formula
+
+For a term **t** in a document **d**:
+
+```
+TF-IDF(t, d) = TF(t, d) * IDF(t)
+```
+
+Where:
+
+- **TF(t, d)** = raw count of term **t** in doc **d** (or log-scaled)
+- **IDF(t)** = `log(N / DF(t))`
+  - N = total number of documents
+  - DF(t) = number of docs where **t** appears
+
+### Example:
+
+- `"engine"` appears **10 times** in doc A, and **1000 out of 10,000 docs**.
+- `"the"` appears **50 times** in doc A, but in **all 10,000 docs**.
+
+Then:
+
+- `TF-IDF("engine", A)` is **high**
+- `TF-IDF("the", A)` is **low** (because it's in every doc → low IDF)
+
+### ✅ Pros
+
+- Simple, intuitive
+- Great for early prototyping
+
+### ❌ Cons
+
+- Doesn’t handle document length normalization well
+- Sensitive to exact word form (doesn’t know "search" ≈ "searching")
+
+## BM25 (Best Matching 25)
+
+BM25 is a **probabilistic ranking model**, widely used in real-world search engines (Lucene, Elasticsearch, Solr).
+
+### Intuition
+
+- Builds on TF-IDF
+- Adds **smart normalization**:
+  - Penalizes long documents
+  - Dampens overly repeated terms
+
+### Formula (simplified)
+
+For term **t** in query **q**, in doc **d**:
+
+```
+Score(d, q) = Σ over t ∈ q:
+    IDF(t) * ((TF(t, d) * (k + 1)) / (TF(t, d) + k * (1 - b + b * (|d| / avg_dlen))))
+```
+
+Where:
+
+- **TF(t, d)** = term frequency in doc
+- **|d|** = length of doc
+- **avg_dlen** = average doc length
+- **k**, **b** = tuning constants:
+  - `k` (term saturation) ≈ 1.2–2.0
+  - `b` (length normalization) ≈ 0.75
+
+### ✅ Pros
+
+- State-of-the-art for keyword search
+- Tunable and robust
+- Handles long vs short docs better than TF-IDF
+
+### ❌ Cons
+
+- Still bag-of-words (no word order/semantics)
+- Needs tuning for best results
+
+## TF-IDF vs BM25 – Quick Comparison
+
+| Feature              | TF-IDF                 | BM25                                |
+| -------------------- | ---------------------- | ----------------------------------- |
+| Simplicity           | ✅ Very simple         | ❌ More complex                     |
+| Length normalization | ❌ Poor                | ✅ Tuned with `b`                   |
+| Saturation control   | ❌ None                | ✅ Handled via `k`                  |
+| Popularity           | Good for small engines | ✅ Default in Lucene, Elasticsearch |
+| Scoring Quality      | Medium                 | ✅ High (better relevance)          |
+
+## Beyond BM25?
+
+If you go further:
+
+- **BM25+**, **BM25L**: BM25 tweaks
+- **Learning-to-rank (LTR)**: ML-based ranking (e.g., LambdaMART)
+- **Dense vector models**: Semantic search using embeddings (BERT, OpenAI embeddings)
