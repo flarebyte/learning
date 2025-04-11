@@ -18,6 +18,43 @@ Below is a concise table outlining Flutter support across major platforms in ter
   - Desktop platforms rely on plugins or native integration, with varying completeness.
   - Web has no direct hardware access; limited to what's exposed via JavaScript APIs (e.g., `navigator.mediaDevices`).
 
+## Common Features That Require Authorization
+
+| Feature            | Requires Authorization | Example Permission              |
+| ------------------ | ---------------------- | ------------------------------- |
+| Platform check     | ❌                     | –                               |
+| Location           | ✅                     | `ACCESS_FINE_LOCATION`          |
+| Camera             | ✅                     | `CAMERA`                        |
+| Microphone         | ✅                     | `RECORD_AUDIO`                  |
+| File system (ext.) | ✅                     | `READ_EXTERNAL_STORAGE`         |
+| Contacts           | ✅                     | `READ_CONTACTS`                 |
+| Bluetooth          | ✅                     | `BLUETOOTH_CONNECT`, `LOCATION` |
+
+### Location
+
+- Accessing GPS or location data.
+- Requires runtime permissions on Android (`ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATION`) and privacy settings in iOS (`NSLocationWhenInUseUsageDescription`).
+
+### Camera & Microphone
+
+- Capturing photos, videos, or audio.
+- Needs `CAMERA`, `RECORD_AUDIO` permissions on Android and `NSCameraUsageDescription`, `NSMicrophoneUsageDescription` on iOS.
+
+### Storage / File Access
+
+- Reading or writing to device storage.
+- Requires `READ_EXTERNAL_STORAGE`, `WRITE_EXTERNAL_STORAGE` on older Android versions (before scoped storage was enforced).
+
+### Contacts, Calendar, SMS, Phone
+
+- Reading contacts or calendar events, sending SMS, or making phone calls.
+- All require separate, sensitive permissions.
+
+### Bluetooth & Nearby Devices
+
+- Scanning or connecting to nearby devices.
+- Requires permissions like `BLUETOOTH_SCAN`, `BLUETOOTH_CONNECT`, and location access on Android.
+
 ## Platform-Specific Compilation (Flutter)
 
 Use `Platform.isIOS`, `Platform.isAndroid`, etc., from `dart:io` to run platform-specific logic:
