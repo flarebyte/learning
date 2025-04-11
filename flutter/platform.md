@@ -18,7 +18,6 @@ Below is a concise table outlining Flutter support across major platforms in ter
   - Desktop platforms rely on plugins or native integration, with varying completeness.
   - Web has no direct hardware access; limited to what's exposed via JavaScript APIs (e.g., `navigator.mediaDevices`).
 
-
 ## Platform-Specific Compilation (Flutter)
 
 Use `Platform.isIOS`, `Platform.isAndroid`, etc., from `dart:io` to run platform-specific logic:
@@ -26,14 +25,32 @@ Use `Platform.isIOS`, `Platform.isAndroid`, etc., from `dart:io` to run platform
 ```dart
 import 'dart:io';
 
-if (Platform.isIOS) {
-  // iOS-specific code
-} else if (Platform.isAndroid) {
-  // Android-specific code
+if (Platform.isAndroid) {
+  // Android
+} else if (Platform.isIOS) {
+  // iOS
+} else if (Platform.isMacOS) {
+  // macOS
+} else if (Platform.isWindows) {
+  // Windows
+} else if (Platform.isLinux) {
+  // Linux
 }
 ```
 
 > ⚠️ Cannot be used in const expressions or outside runtime.
+
+**Web Detection**
+
+```dart
+import 'package:flutter/foundation.dart';
+
+if (kIsWeb) {
+  // Running on the web
+}
+```
+
+- `Platform` is **not supported** on the web. Always guard its usage with `if (!kIsWeb)` to avoid runtime exceptions.
 
 ### Compile-Time Conditional Imports
 
@@ -82,4 +99,3 @@ const bool isInternalBuild = bool.fromEnvironment('INTERNAL_BUILD');
 ```bash
 flutter run --dart-define=INTERNAL_BUILD=true
 ```
-
