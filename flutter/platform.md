@@ -57,6 +57,15 @@ Below is a concise table outlining Flutter support across major platforms in ter
 - Scanning or connecting to nearby devices.
 - Requires permissions like `BLUETOOTH_SCAN`, `BLUETOOTH_CONNECT`, and location access on Android.
 
+## Platform GPU Support Overview
+
+| Platform                       | GPU Usage                                                                                                                                   |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Android/iOS**                | ✅ Full GPU acceleration via Skia/OpenGL or Vulkan                                                                                          |
+| **Windows/macOS**              | ✅ GPU acceleration via Skia with platform APIs                                                                                             |
+| **Linux (x64)**                | ✅ GPU acceleration via OpenGL (with proper drivers)                                                                                        |
+| **Linux (ARM / Raspberry Pi)** | ⚠️ **Not by default** – Flutter on Raspberry Pi uses **software rendering** via CPU unless a custom embedder is created to enable GPU usage |
+
 ## Platform-Specific Compilation (Flutter)
 
 Use `Platform.isIOS`, `Platform.isAndroid`, etc., from `dart:io` to run platform-specific logic:
