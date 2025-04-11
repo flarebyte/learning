@@ -17,3 +17,69 @@ Below is a concise table outlining Flutter support across major platforms in ter
   - Android and iOS have mature support.
   - Desktop platforms rely on plugins or native integration, with varying completeness.
   - Web has no direct hardware access; limited to what's exposed via JavaScript APIs (e.g., `navigator.mediaDevices`).
+
+
+## Platform-Specific Compilation (Flutter)
+
+Use `Platform.isIOS`, `Platform.isAndroid`, etc., from `dart:io` to run platform-specific logic:
+
+```dart
+import 'dart:io';
+
+if (Platform.isIOS) {
+  // iOS-specific code
+} else if (Platform.isAndroid) {
+  // Android-specific code
+}
+```
+
+> ⚠️ Cannot be used in const expressions or outside runtime.
+
+### Compile-Time Conditional Imports
+
+Use **`dart.library.*`** environment constants:
+
+```dart
+// main.dart
+import 'implementation_stub.dart'
+  if (dart.library.io) 'implementation_io.dart'
+  if (dart.library.html) 'implementation_web.dart';
+
+void main() {
+  doSomething();
+}
+```
+
+```dart
+// implementation_io.dart
+void doSomething() {
+  print('Running on native platform');
+}
+```
+
+```dart
+// implementation_web.dart
+void doSomething() {
+  print('Running on web');
+}
+```
+
+```dart
+// implementation_stub.dart
+void doSomething() {
+  throw UnsupportedError('Unknown platform');
+}
+```
+
+### Build-Time Environment Variables
+
+Use `--dart-define` with `const String.fromEnvironment()`:
+
+```dart
+const bool isInternalBuild = bool.fromEnvironment('INTERNAL_BUILD');
+```
+
+```bash
+flutter run --dart-define=INTERNAL_BUILD=true
+```
+
