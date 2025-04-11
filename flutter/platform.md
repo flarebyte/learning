@@ -287,3 +287,24 @@ Below is a focused table for **AI, Machine Learning, and Encryption APIs**, show
 > ✅ = Natively supported by the platform  
 > ❌ = Not supported or requires custom/platform-specific code  
 > **Flutter Native Support** = Out-of-the-box Dart or Flutter support (no plugins or platform code)
+
+Below is a table covering **Image, Video, and Audio Processing & Manipulation** APIs, indicating native support on each platform and whether Flutter supports them **natively (pure Dart/Flutter), without plugins, FFI, or platform channels**.
+
+| **API Category**             | **iOS Native**     | **Android Native**        | **Web Native**       | **Desktop Native**       | **Flutter Native Support** |
+| ---------------------------- | ------------------ | ------------------------- | -------------------- | ------------------------ | -------------------------- |
+| Image Decoding/Encoding      | ✅ CoreGraphics    | ✅ BitmapFactory          | ✅ `<canvas>`, Image | ✅ libjpeg, etc.         | ✅ via `dart:ui`, `Image`  |
+| Image Resizing/Cropping      | ✅ CoreImage       | ✅ Bitmap                 | ✅ `<canvas>`        | ✅                       | ❌                         |
+| Image Filters (e.g., blur)   | ✅ CoreImage/Metal | ✅ RenderScript           | ✅ `<canvas>`        | ✅                       | ❌                         |
+| Video Playback               | ✅ AVPlayer        | ✅ MediaPlayer/ExoPlayer  | ✅ `<video>`         | ✅ OS APIs               | ❌ (plugin required)       |
+| Video Recording              | ✅ AVFoundation    | ✅ Camera2                | ✅ MediaRecorder     | ✅ (OS dependent)        | ❌                         |
+| Video Encoding/Decoding      | ✅ AVFoundation    | ✅ MediaCodec             | ✅ WebCodecs         | ✅                       | ❌                         |
+| Frame Extraction from Video  | ✅ AVAssetImageGen | ✅ MediaMetadataRetriever | ✅ `<canvas>`        | ✅ (FFmpeg, etc.)        | ❌                         |
+| Audio Playback               | ✅ AVAudioPlayer   | ✅ MediaPlayer            | ✅ `<audio>`         | ✅ OS APIs               | ❌ (plugin required)       |
+| Audio Recording              | ✅ AVAudioRecorder | ✅ AudioRecord            | ✅ MediaRecorder     | ✅                       | ❌                         |
+| Audio Processing (FFT, etc.) | ✅ AVAudioEngine   | ✅ AudioTrack/Opensl      | ❌ (limited)         | ✅ (libs like PortAudio) | ❌                         |
+| Audio Encoding/Decoding      | ✅ AVFoundation    | ✅ MediaCodec             | ✅ Web Audio API     | ✅                       | ❌                         |
+| GIF Encoding/Decoding        | ✅ ImageIO         | ✅ Glide                  | ✅ `<img>`           | ✅                       | ❌                         |
+
+> ✅ = Supported natively by the platform  
+> ❌ = Not supported or requires plugin/platform code  
+> **Flutter Native Support** = Pure Dart or Flutter support, no native bridge or plugins
