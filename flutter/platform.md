@@ -231,7 +231,7 @@ class AppDelegate: FlutterAppDelegate {
 }
 ```
 
-## **Data Types Supported**
+## Data Types Supported
 
 Dart and platform sides can exchange:
 
@@ -239,3 +239,32 @@ Dart and platform sides can exchange:
 - `List`, `Map`, and `null`
 
 > Complex data should be converted to JSON or structured as Map<String, dynamic>.
+
+## Api not supported
+
+Here's a table listing APIs that are **natively supported in iOS, Android, Web, and/or Desktop**, but **not supported natively in Flutter** (i.e., they require manual integration via platform channels or third-party plugins). These are platform-specific capabilities for which Flutter does not provide a first-party abstraction or cross-platform support out of the box.
+
+| **API Category**            | **iOS Native** | **Android Native** | **Web Native** | **Desktop Native** | **Flutter Native Support**                  |
+| --------------------------- | -------------- | ------------------ | -------------- | ------------------ | ------------------------------------------- |
+| Push Notifications          | ✅             | ✅                 | ✅ (limited)   | ❌                 | ❌ (plugin required)                        |
+| Background Services         | ✅             | ✅                 | ❌             | ❌                 | ❌ (plugin required)                        |
+| Bluetooth / BLE             | ✅             | ✅                 | ❌             | ✅ (partial)       | ❌                                          |
+| NFC                         | ✅             | ✅                 | ❌             | ❌                 | ❌                                          |
+| In-App Purchases            | ✅             | ✅                 | ❌             | ❌                 | ❌                                          |
+| Health APIs                 | ✅ (HealthKit) | ✅ (Google Fit)    | ❌             | ❌                 | ❌                                          |
+| App Lifecycle Events        | ✅             | ✅                 | ✅             | ✅                 | ❌ (partially via `WidgetsBindingObserver`) |
+| Native UI Views             | ✅             | ✅                 | ✅ (DOM)       | ✅                 | ❌ (requires PlatformView)                  |
+| Platform Authentication     | ✅             | ✅                 | ✅             | ✅                 | ❌                                          |
+| Keychain / Keystore         | ✅             | ✅                 | ❌             | ✅                 | ❌                                          |
+| Background Audio            | ✅             | ✅                 | ✅             | ✅                 | ❌                                          |
+| VPN / Network Extensions    | ✅             | ✅                 | ❌             | ✅                 | ❌                                          |
+| App Shortcuts / Intents     | ✅             | ✅                 | ✅ (PWA)       | ❌                 | ❌                                          |
+| App Widgets / Extensions    | ✅             | ✅                 | ❌             | ❌                 | ❌                                          |
+| Dynamic Links / URL Schemes | ✅             | ✅                 | ✅             | ✅                 | ❌                                          |
+| File Picker (Native UI)     | ✅             | ✅                 | ✅             | ✅                 | ❌                                          |
+| Device Admin APIs           | ❌             | ✅                 | ❌             | ❌                 | ❌                                          |
+| Accessibility Services      | ✅             | ✅                 | ✅             | ✅                 | ❌ (partially via semantics)                |
+
+> ✅ = Supported natively on the platform  
+> ❌ = Not supported or limited  
+> **Flutter Native Support** = Does Flutter provide this functionality out of the box, without plugins or platform channels?
