@@ -268,3 +268,22 @@ Here's a table listing APIs that are **natively supported in iOS, Android, Web, 
 > ✅ = Supported natively on the platform  
 > ❌ = Not supported or limited  
 > **Flutter Native Support** = Does Flutter provide this functionality out of the box, without plugins or platform channels?
+
+Below is a focused table for **AI, Machine Learning, and Encryption APIs**, showing whether they are natively supported on each platform (iOS, Android, Web, Desktop), and whether Flutter supports them **natively without requiring plugins, FFI, or platform channels**.
+
+| **API Category**               | **iOS Native**        | **Android Native**  | **Web Native**           | **Desktop Native**       | **Flutter Native Support** |
+| ------------------------------ | --------------------- | ------------------- | ------------------------ | ------------------------ | -------------------------- |
+| On-device ML Inference         | ✅ Core ML            | ✅ ML Kit / NNAPI   | ❌ (Web ML is limited)   | ❌ (custom integrations) | ❌                         |
+| Model Downloading              | ✅                    | ✅                  | ✅                       | ✅                       | ❌                         |
+| Image Classification           | ✅ Core ML            | ✅ ML Kit           | ❌                       | ❌                       | ❌                         |
+| Speech Recognition             | ✅ SFSpeechRecognizer | ✅ SpeechRecognizer | ✅ Web Speech API        | ✅ (via OS APIs)         | ❌                         |
+| NLP (Text analysis)            | ✅ NaturalLanguage    | ✅ ML Kit           | ✅ (some JS libs)        | ❌                       | ❌                         |
+| Face Detection                 | ✅ Vision Framework   | ✅ ML Kit           | ✅ (limited in JS)       | ❌                       | ❌                         |
+| Biometric Auth (Face/Touch ID) | ✅ LocalAuth          | ✅ BiometricPrompt  | ❌                       | ✅ (OS dependent)        | ❌                         |
+| Asymmetric Encryption          | ✅ SecKey API         | ✅ AndroidKeyStore  | ✅ Web Crypto API        | ✅ OpenSSL, native APIs  | ❌                         |
+| Symmetric Encryption           | ✅ CommonCrypto       | ✅ javax.crypto     | ✅ Web Crypto API        | ✅ (OpenSSL, etc.)       | ❌                         |
+| Secure Storage                 | ✅ Keychain           | ✅ Keystore         | ❌ (storage is insecure) | ✅ Platform-specific     | ❌                         |
+
+> ✅ = Natively supported by the platform  
+> ❌ = Not supported or requires custom/platform-specific code  
+> **Flutter Native Support** = Out-of-the-box Dart or Flutter support (no plugins or platform code)
