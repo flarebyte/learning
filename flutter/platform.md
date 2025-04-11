@@ -147,3 +147,95 @@ const bool isInternalBuild = bool.fromEnvironment('INTERNAL_BUILD');
 ```bash
 flutter run --dart-define=INTERNAL_BUILD=true
 ```
+
+## Overview of `MethodChannel` in Flutter
+
+`MethodChannel` enables communication between Dart (Flutter) and platform-specific code (Kotlin/Java on Android, Swift/Objective-C on iOS). This is Flutter’s standard mechanism for executing **native platform functionality** not exposed by the Flutter framework.
+
+**Use Cases**
+
+- Accessing platform-specific APIs (e.g., biometrics, encryption, Bluetooth, camera).
+- Performing secure operations (e.g., key storage, native encryption).
+- Implementing performance-critical features.
+
+**Best Practices**
+
+- Always use `try/catch` on Dart side to handle platform exceptions.
+- Validate input and output types carefully.
+- Use unique and well-namespaced channel names (e.g., `com.example.security/encryption`).
+- Keep platform logic modular and testable.
+
+## Basic Structure
+
+### Dart Side
+
+```dart
+const MethodChannel _channel = MethodChannel('your_channel_name');
+
+Future<T> callNative<T>(String method, [dynamic arguments]) async {
+  return await _channel.invokeMethod<T>(method, arguments);
+}
+```
+
+### Android (Kotlin)
+
+```kotlin
+class MainActivity : FlutterActivity() {
+  private val CHANNEL = "your_channel_name"
+
+  override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+    super.configureFlutterEngine(flutterEngine)
+    MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
+      call, result ->
+      when (call.method) {
+        "encrypt" -> {
+          val text = call.argument<String>("text") ?: ""
+          val encrypted = encrypt(text)
+          result.success(encrypted)
+        }
+        else -> result.notImplemented()
+      }
+    }
+  }
+}
+```
+
+### iOS (Swift)
+
+```swift
+class AppDelegate: FlutterAppDelegate {
+  private let channelName = "your_channel_name"
+
+  override func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
+    let controller = window?.rootViewController as! FlutterViewController
+    let channel = FlutterMethodChannel(name: channelName, binaryMessenger: controller.binaryMessenger)
+
+    channel.setMethodCallHandler { (call, result) in
+      switch call.method {
+        case "encrypt":
+          if let args = call.arguments as? [String: Any],
+             let text = args["text"] as? String {
+            result("encrypted-\(text)") // Replace with actual encryption
+          } else {
+            result(FlutterError(code: "INVALID", message: "Missing text", details: nil))
+          }
+        default:
+          result(FlutterMethodNotImplemented)
+      }
+    }
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+}
+```
+
+## **Data Types Supported**
+
+Dart and platform sides can exchange:
+
+- `int`, `double`, `bool`, `String`
+- `List`, `Map`, and `null`
+
+> Complex data should be converted to JSON or structured as Map<String, dynamic>.
