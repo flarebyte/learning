@@ -62,6 +62,22 @@ x := 10
 - For public APIs, Go documentation comments are critical.
 - Tools like [`golint`](https://github.com/golang/lint) and [`staticcheck`](https://staticcheck.io/) enforce this style.
 
+**✅ Best Practices Summary**
+
+| Tip                    | Description                                                       |
+| ---------------------- | ----------------------------------------------------------------- |
+| 🧱 Start with the name | All exported items should be commented, starting with their name. |
+| 🧠 Be concise & clear  | One or two sentences is often enough.                             |
+| 📚 Explain purpose     | Focus on _what_ and _why_, not _how_.                             |
+| ✅ Be consistent       | Keep tone and style consistent across your package.               |
+
+**Tools That Use These Comments**
+
+- [`go doc`](https://pkg.go.dev/cmd/go#hdr-Show_documentation_for_package_or_symbol)
+- [`godoc`](https://pkg.go.dev/golang.org/x/tools/cmd/godoc)
+- [`pkg.go.dev`](https://pkg.go.dev/)
+- Linters like `golint`, `staticcheck`
+
 ### Avoid Block Comments for Code Explanation
 
 - Prefer single-line `//` comments even for longer explanations, placing them above the code block.
