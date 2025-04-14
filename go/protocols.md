@@ -1,6 +1,6 @@
 # Protocols
 
-Markdown table including a Security column — highlighting each protocol/format's general security characteristics, such as schema enforcement, attack surface, and resistance to injection or fuzzing.
+Table including a Security column — highlighting each protocol/format's general security characteristics, such as schema enforcement, attack surface, and resistance to injection or fuzzing.
 
 | Protocol / Format               | Description                                     | Native / External                                | Security Characteristics                                      |
 | ------------------------------- | ----------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------- |
@@ -23,3 +23,30 @@ Markdown table including a Security column — highlighting each protocol/format
 - ✅ **Protobuf/gRPC/Cap’n Proto/FlatBuffers** → safest for structured, binary communication.
 - ⚠️ **JSON/YAML/XML/INI** → require care to sanitize inputs and validate schema manually.
 - ✅ **CBOR/MessagePack** → compact and safe if parsers are strict and inputs validated.
+
+## JSON vs CBOR
+
+| Feature                  | CBOR                          | JSON                     |
+| ------------------------ | ----------------------------- | ------------------------ |
+| Format                   | Binary                        | Text                     |
+| Schema Enforcement       | ✅ Better type control        | ❌ None by default       |
+| Injection Risk           | ✅ Low (hard to exploit)      | ⚠️ High (text-based)     |
+| Canonicalization         | ✅ RFC-backed                 | ❌ No standard support   |
+| Parser Efficiency        | ✅ High (compact & fast)      | ⚠️ Varies (can be slow)  |
+| Secure Signature Support | ✅ Easier with canonical form | ⚠️ Requires custom logic |
+
+## AWS Lambda in Go (backend) ↔ Flutter (all platforms, Dart)
+
+| Approach                   | Cross-platform   | Performance  | Simplicity            | Security             | Infra Needs     |
+| -------------------------- | ---------------- | ------------ | --------------------- | -------------------- | --------------- |
+| **REST + JSON**            | ✅✅✅           | ⚠️ Medium    | ✅ Easy               | ✅ With HTTPS/Auth   | ✅ Minimal      |
+| **REST + Protobuf**        | ✅✅✅           | ✅ High      | ✅ Moderate           | ✅ Strong with HTTPS | ✅ Minimal      |
+| **gRPC + Protobuf**        | ⚠️ gRPC-Web only | ✅✅ High    | ⚠️ Complex            | ✅✅ Strong          | ⚠️ Envoy/Proxy  |
+| **CBOR/FlatBuffers**       | ⚠️ Dart limited  | ✅ High      | ❌ Niche              | ✅ Yes               | ❌ Complex      |
+| **WebSocket (JSON/Proto)** | ✅               | ✅ Real-time | ⚠️ Tricky with Lambda | ✅ Depends on setup  | ⚠️ AWS-specific |
+
+> Use **Protobuf over standard REST (HTTPS)** for:
+>
+> - ✅ Compact, schema-safe communication
+> - ✅ Full compatibility with Flutter on all platforms
+> - ✅ Simple deployment using AWS Lambda + API Gateway
