@@ -50,3 +50,58 @@ Table including a Security column — highlighting each protocol/format's genera
 > - ✅ Compact, schema-safe communication
 > - ✅ Full compatibility with Flutter on all platforms
 > - ✅ Simple deployment using AWS Lambda + API Gateway
+
+## Amazon API Gateway (HTTP API or REST API)
+
+→ **Both support binary payloads** like Protobuf, with a few extra steps.
+
+> ✅ **Use API Gateway HTTP API** (simpler, modern)  
+> ✅ **Set `Content-Type: application/x-protobuf`**  
+> ✅ **Binary data flows cleanly** between Flutter and Go Lambda  
+> 🔁 If using REST API, you must enable Binary Media Types and handle Base64
+
+## Options Breakdown
+
+| API Gateway Type  | Supports Protobuf     | Simplicity                | Best For                          |
+| ----------------- | --------------------- | ------------------------- | --------------------------------- |
+| **HTTP API** (v2) | ✅ Yes (with config)  | ✅ Simpler setup          | Modern REST APIs (preferred)      |
+| **REST API** (v1) | ✅ Yes (more options) | ⚠️ More complex           | Fine-grained control, legacy use  |
+| **WebSocket API** | ⚠️ Not suitable       | ❌ No binary body support | Real-time, not ideal for Protobuf |
+
+## How to Make Protobuf Work
+
+**Enable Binary Media Types**
+
+- By default, API Gateway assumes text payloads.
+- You need to **tell it to allow binary content**, like `application/x-protobuf`.
+
+**Go Lambda Handler**
+
+- Use `APIGatewayProxyRequest.Body` and decode from binary.
+- If using REST API, you'll **Base64-decode the body** (if `isBase64Encoded == true`).
+- Decode the Protobuf message using generated Go code.
+
+**Client-Side (Flutter/Dart)**
+
+- Send request using HTTP POST/GET
+- Set headers:
+  ```http
+  Content-Type: application/x-protobuf
+  Accept: application/x-protobuf
+  ```
+- Body should be a **raw Protobuf-encoded binary**.
+
+**Securing It**
+
+- Use **IAM, JWT (via Cognito), or API keys** with API Gateway for auth.
+- Always use **HTTPS** (automatically enforced by API Gateway).
+
+**For REST API (v1):**
+
+- In settings, **add `application/x-protobuf`** (or your custom MIME type) to **Binary Media Types**.
+- You’ll also need to **Base64 encode** the request/response body in Lambda.
+
+**For HTTP API (v2):**
+
+- It **automatically supports binary** when the `Content-Type` is a binary MIME type — you don’t need to define binary media types manually.
+- Still, make sure the **client and server both respect `Content-Type: application/x-protobuf`**.
