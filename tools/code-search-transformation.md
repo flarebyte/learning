@@ -1,19 +1,28 @@
 # Structural Code Search and Transformation Tools
 
-| Tool                                                          | Lang Support (TS, JS, Go, Py, Dart) | Structural? | Open Source? | Notes                                                                     |
-| ------------------------------------------------------------- | ----------------------------------- | ----------- | ------------ | ------------------------------------------------------------------------- |
-| **Comby**                                                     | ✅ ✅ ✅ ✅ ⚠️ (partial Dart)       | ✅ Yes      | ✅ Yes       | Declarative pattern matching, CLI-based. Great for many langs.            |
-| **jscodeshift**                                               | ✅ ✅ ❌ ❌ ❌                      | ✅ Yes      | ✅ Yes       | Built for JavaScript/TypeScript; uses Babel.                              |
-| **ts-morph**                                                  | ✅ ✅ ❌ ❌ ❌                      | ✅ Yes      | ✅ Yes       | High-level wrapper around TypeScript compiler API.                        |
-| **recast**                                                    | ✅ ✅ ❌ ❌ ❌                      | ✅ Yes      | ✅ Yes       | JavaScript/TS AST parser and code generator. Often used with jscodeshift. |
-| **Babel**                                                     | ✅ ✅ ❌ ❌ ❌                      | ✅ Yes      | ✅ Yes       | General-purpose JS/TS compiler with powerful plugin API.                  |
-| **codemod (Facebook)**                                        | ❌ ✅ ❌ ✅ ❌                      | ⚠️ Limited  | ✅ Yes       | Python-focused, used internally at Meta.                                  |
-| **pyastgrep**                                                 | ❌ ❌ ❌ ✅ ❌                      | ✅ Yes      | ✅ Yes       | Structural grep for Python ASTs.                                          |
-| **libCST**                                                    | ❌ ❌ ❌ ✅ ❌                      | ✅ Yes      | ✅ Yes       | Python refactoring framework from Meta.                                   |
-| **Go AST (`go/ast`)**                                         | ❌ ❌ ✅ ❌ ❌                      | ✅ Yes      | ✅ Yes       | Native Go AST manipulation.                                               |
-| **Golang Rewrite (github.com/incu6us/goast) or `go-rewrite`** | ❌ ❌ ✅ ❌ ❌                      | ✅ Yes      | ✅ Yes       | Go AST transformer.                                                       |
-| **Dart Codemod**                                              | ❌ ❌ ❌ ❌ ✅                      | ✅ Yes      | ✅ Yes       | Dart-specific codemod framework.                                          |
-| **ASTGrep**                                                   | ✅ ✅ ✅ ✅ ⚠️                      | ✅ Yes      | ✅ Yes       | Powerful AST search tool with tree-sitter support.                        |
+| Tool                   | Lang Support (TS, JS, Go, Py, Dart) | 🔍 Search  | 🔁 Code-mod | 🛠️ Usage (CLI/API) | Notes                                                    |
+| ---------------------- | ----------------------------------- | ---------- | ----------- | ------------------ | -------------------------------------------------------- |
+| **Comby**              | ✅ ✅ ✅ ✅ ⚠️ (partial Dart)       | ✅ Yes     | ✅ Yes      | CLI, Config        | DSL-style patterns. Multi-language, simple to use.       |
+| **ASTGrep**            | ✅ ✅ ✅ ✅ ⚠️                      | ✅ Yes     | ✅ Yes      | CLI, Config, API   | Tree-sitter based. Fast and very flexible.               |
+| **jscodeshift**        | ✅ ✅ ❌ ❌ ❌                      | ✅ Yes     | ✅ Yes      | CLI (Node.js)      | Used at Meta. Babel-based, scriptable in JS.             |
+| **ts-morph**           | ✅ ✅ ❌ ❌ ❌                      | ⚠️ Partial | ✅ Yes      | API (TypeScript)   | TS wrapper for compiler API. Great for precise mods.     |
+| **recast**             | ✅ ✅ ❌ ❌ ❌                      | ✅ Yes     | ✅ Yes      | API (JS/TS)        | Code gen + AST parsing. Often combined with jscodeshift. |
+| **babel**              | ✅ ✅ ❌ ❌ ❌                      | ⚠️ Partial | ✅ Yes      | CLI, API           | Plugin-based transformations. Powerful, but complex.     |
+| **libCST**             | ❌ ❌ ❌ ✅ ❌                      | ✅ Yes     | ✅ Yes      | API (Python)       | Meta’s structured Python tool. Very accurate.            |
+| **pyastgrep**          | ❌ ❌ ❌ ✅ ❌                      | ✅ Yes     | ❌ No       | CLI, API           | Search only. Python AST grep.                            |
+| **codemod (Facebook)** | ❌ ✅ ❌ ✅ ❌                      | ⚠️ Limited | ✅ Yes      | CLI, API (Python)  | Lightweight tool for Python code changes.                |
+| **go/ast**             | ❌ ❌ ✅ ❌ ❌                      | ❌ No      | ✅ Yes      | API (Go)           | Native. Requires manual AST handling.                    |
+| **go-rewrite / goast** | ❌ ❌ ✅ ❌ ❌                      | ✅ Yes     | ✅ Yes      | CLI, API (Go)      | Structural rewrite for Go.                               |
+| **dart_codemod**       | ❌ ❌ ❌ ❌ ✅                      | ⚠️ Partial | ✅ Yes      | CLI, API (Dart)    | Dart-specific codemod library.                           |
+
+**Legend:**
+
+- ✅ Yes = Fully supported
+- ⚠️ Partial = Somewhat supported or requires setup
+- ❌ No = Not supported
+- **CLI** = Command-line tool
+- **API** = Programmatic access (good for custom logic)
+- **Config** = Declarative, pattern-based usage (DSL or YAML)
 
 **Best by Language**
 
