@@ -82,3 +82,50 @@ x := 10
 
 - Prefer single-line `//` comments even for longer explanations, placing them above the code block.
 - Reserve `/* */` for disabling blocks of code or legal info.
+
+## Public vs Private in Go
+
+**Public (Exported)**
+
+- **Starts with a capital letter**.
+- Accessible from **other packages**.
+- Treated as part of your library's **public API**.
+
+```go
+// This function is public (exported)
+func Add(a, b int) int {
+    return a + b
+}
+```
+
+**Private (Unexported)**
+
+- **Starts with a lowercase letter**.
+- **Only accessible inside the same package**.
+- Used for internal logic or helpers.
+
+```go
+// This function is private (unexported)
+func subtract(a, b int) int {
+    return a - b
+}
+```
+
+**Applies to:**
+
+| Thing     | Public Example | Private Example |
+| --------- | -------------- | --------------- |
+| Function  | `Println`      | `formatMessage` |
+| Variable  | `MaxSize`      | `timeout`       |
+| Struct    | `User`         | `config`        |
+| Field     | `Name string`  | `id int`        |
+| Interface | `Reader`       | `logger`        |
+
+> 📌 **Note:** Even inside a public struct, fields must be capitalized to be exported.
+
+```go
+type User struct {
+    ID   int    // Exported
+    name string // Not exported (private)
+}
+```
