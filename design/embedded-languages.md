@@ -30,3 +30,25 @@
 - ☑️ = Partial or DIY
 - ⚠️ = Possible but tricky / limited
 - ❌ = Not supported or practical
+
+## Embedded VMs
+
+| VM Name                | Language      | Description                                                              |
+| ---------------------- | ------------- | ------------------------------------------------------------------------ |
+| **Lua VM**             | Lua           | Stack-based. Tiny, embeddable, mature. Part of `liblua` (C library).     |
+| **LuaJIT VM**          | Lua           | Like Lua, but includes a JIT compiler. Still embeddable.                 |
+| **Wren VM**            | Wren          | Clean, lightweight, register-based. One `.c` and `.h` file.              |
+| **Duktape VM**         | JavaScript    | Lightweight JS VM in pure C. Easy to embed.                              |
+| **QuickJS VM**         | JavaScript    | Full JS support, slightly heavier. Embeddable via C.                     |
+| **MicroPython VM**     | Python        | Interprets Python bytecode on microcontrollers. VM included in firmware. |
+| **TinyScheme VM**      | Scheme (Lisp) | Lisp-style interpreter/VM in C.                                          |
+| **Squirrel VM**        | Squirrel      | Stack-based, compact, made for games.                                    |
+| **mruby VM**           | Ruby          | Embedded Ruby VM.                                                        |
+| **ChaiScript Runtime** | ChaiScript    | No actual bytecode; it interprets AST directly (slower, but flexible).   |
+
+## Stack vs Register Based VMs
+
+| Type           | Example       | How it works                                                    |
+| -------------- | ------------- | --------------------------------------------------------------- |
+| Stack-based    | Lua, Squirrel | Ops push/pop from a value stack                                 |
+| Register-based | Python, Wren  | Ops read/write from virtual registers (faster but more complex) |
