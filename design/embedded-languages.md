@@ -52,3 +52,65 @@
 | -------------- | ------------- | --------------------------------------------------------------- |
 | Stack-based    | Lua, Squirrel | Ops push/pop from a value stack                                 |
 | Register-based | Python, Wren  | Ops read/write from virtual registers (faster but more complex) |
+
+## Common VM Instruction Types (Opcodes)
+
+Here’s a categorized list of the **most common instruction types**, which show up in almost every VM — from Lua to Python to your own tiny stack machine:
+
+### Stack Manipulation
+
+| Instruction  | Purpose                         |
+| ------------ | ------------------------------- |
+| `PUSH value` | Push constant onto the stack    |
+| `POP`        | Remove top value from the stack |
+| `DUP`        | Duplicate the top value         |
+| `SWAP`       | Swap top two values             |
+
+### ➕ Arithmetic / Logic
+
+| Instruction        | Purpose                  |
+| ------------------ | ------------------------ |
+| `ADD`              | Add top two values       |
+| `SUB`              | Subtract                 |
+| `MUL`              | Multiply                 |
+| `DIV`              | Divide                   |
+| `MOD`              | Modulo                   |
+| `NEG`              | Negate (unary minus)     |
+| `EQ` / `NEQ`       | Compare for equality     |
+| `GT` / `LT`        | Greater than / Less than |
+| `AND`, `OR`, `NOT` | Boolean logic            |
+
+### Variables / Memory
+
+| Instruction   | Purpose                      |
+| ------------- | ---------------------------- |
+| `LOAD var`    | Push value of variable       |
+| `STORE var`   | Pop top value and store it   |
+| `LOAD_GLOBAL` | Load from global environment |
+| `SET_GLOBAL`  | Store to global env          |
+
+### Control Flow
+
+| Instruction    | Purpose                       |
+| -------------- | ----------------------------- |
+| `JMP addr`     | Jump to instruction address   |
+| `JMP_IF_TRUE`  | Jump if top of stack is true  |
+| `JMP_IF_FALSE` | Jump if top of stack is false |
+| `CALL addr`    | Call function / subroutine    |
+| `RET`          | Return from function          |
+
+### Function Handling
+
+| Instruction | Purpose                             |
+| ----------- | ----------------------------------- |
+| `CALL n`    | Call function with n args           |
+| `RET`       | Return from function                |
+| `CLOSURE`   | Create a closure (with environment) |
+
+### Table / Object / Array Access
+
+| Instruction | Purpose                    |
+| ----------- | -------------------------- |
+| `GETTABLE`  | Get value from table/array |
+| `SETTABLE`  | Set value in table/array   |
+| `NEWTABLE`  | Create a new table/object  |
