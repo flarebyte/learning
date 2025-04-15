@@ -114,3 +114,14 @@ Here’s a categorized list of the **most common instruction types**, which show
 | `GETTABLE`  | Get value from table/array |
 | `SETTABLE`  | Set value in table/array   |
 | `NEWTABLE`  | Create a new table/object  |
+
+## ASTs vs VMs in Embedded Languages
+
+| Feature           | AST                            | VM                                  |
+| ----------------- | ------------------------------ | ----------------------------------- |
+| Shape             | Tree                           | Flat list of instructions           |
+| Standardization   | ❌ Usually bespoke             | ✅ Often follows patterns           |
+| Level             | High-level (close to source)   | Low-level (close to hardware)       |
+| Language-specific | Yes                            | Not necessarily                     |
+| Optimized for     | Parsing, analysis              | Execution                           |
+| Reusable?         | Only between similar languages | Reusable patterns (stack, register) |
