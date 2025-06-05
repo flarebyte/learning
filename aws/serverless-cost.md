@@ -1,6 +1,6 @@
 # Relative cost of AWS serverless services
 
-| Service                         | Operation                                | Cost (USD) per 1M | Notes                                                 | Typical Response Time | 
+| Service                         | Operation                                | Cost (USD) per 1M | Notes                                                 | Typical Response Time |
 | ------------------------------- | ---------------------------------------- | ----------------- | ----------------------------------------------------- | --------------------- |
 | Lambda                          | Invoke (128MB, 100ms)                    | \$0.408           | Excludes request cost; billed in 1ms increments       | \~1–100 ms cold start |
 | Lambda                          | Invoke (512MB, 1s)                       | \$3.276           | Excludes request cost; higher memory incurs more cost | \~1–100 ms cold start |
@@ -20,3 +20,7 @@
 | API Gateway                     | HTTP API Call                            | \$100.000         | Authorizers, throttling, and TLS add cost             | \~20–100 ms           |
 | Secrets Manager                 | GetSecretValue                           | \$5.000           | Plus \$0.40 per secret/month storage                  | \~20–200 ms           |
 | Systems Manager Parameter Store | GetParameter (Advanced Tier)             | \$5.000           | \$0.05 per parameter/month + request cost             | \~30–200 ms           |
+| KMS                             | Encrypt / Decrypt                        | $3.00             | $0.03 per 10K requests; $1/month per key              | ~5–50 ms              |
+| SQS                             | Standard Queue Send                      | $0.40             | Charged after 1M free requests; billed per 64KB       | ~10–50 ms             |
+| SQS                             | FIFO Queue Send                          | $0.50             | Guarantees order; higher cost                         | ~20–100 ms            |
+| EventBridge                     | PutEvents                                | $1.00             | Charged after 100K free events                        | ~20–50 ms             |
