@@ -23,4 +23,3 @@
 | KMS                             | Encrypt / Decrypt                        | $3.00             | $0.03 per 10K requests; $1/month per key              | ~5–50 ms              |
 | SQS                             | Standard Queue Send                      | $0.40             | Charged after 1M free requests; billed per 64KB       | ~10–50 ms             |
 | SQS                             | FIFO Queue Send                          | $0.50             | Guarantees order; higher cost                         | ~20–100 ms            |
-| EventBridge                     | PutEvents                                | $1.00             | Charged after 100K free events                        | ~20–50 ms             |
