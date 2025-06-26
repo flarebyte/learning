@@ -2,6 +2,10 @@
 
 ### Database Comparison Table
 
+Assuming:
+
+- 5 concurrent connections, ~100 req/s peak
+
 | Database       | Memory Usage (est.) | CPU Usage (est.) | Written In | Notes                                                           |
 | -------------- | ------------------- | ---------------- | ---------- | --------------------------------------------------------------- |
 | **MySQL**      | \~200–400 MB        | Low–Moderate     | C, C++     | Stable; efficient under light-to-moderate workloads.            |
@@ -33,3 +37,21 @@
 | **Compression**         | Optimization   | Reduces storage size and speeds up I/O                                       | ⭐️⭐️          | All (especially InfluxDB, OpenSearch, Redis)                           |
 | **ACID Transactions**   | Consistency    | Guarantees atomicity, consistency, isolation, durability of operations       | ⭐️⭐️⭐️⭐️    | PostgreSQL, MySQL, MariaDB, Neo4j                                      |
 | **Concurrency Control** | Consistency    | Manages concurrent access to ensure data integrity                           | ⭐️⭐️⭐️⭐️    | PostgreSQL, MySQL, Neo4j                                               |
+
+### 💰 Monthly Cost Estimates
+
+Assuming:
+
+- 5 concurrent connections, ~100 req/s peak
+- **db.t3.medium (2 vCPU, 4 GB RAM)** for RDS and the similar **t3.medium** for EC2/ECS.
+
+| Database       | Managed                                                              | EC2 (Self‑managed)                           | ECS (Docker‑Cloud)            |
+| -------------- | -------------------------------------------------------------------- | -------------------------------------------- | ----------------------------- |
+| **MySQL**      | \$34 + storage & I/O (\~+ \$10) ≈ **\$44**                           | \$30.40 + EBS (\~\$5) = **\$35.40**          | \~\$42 (x1.2 \* EC2)          |
+| **MariaDB**    | Similar to MySQL ≈ **\$44**                                          | **\$35.40**                                  | **\$42**                      |
+| **PostgreSQL** | \~10% higher: \$37 + \$10 = **\$47**                                 | **\$35.40**                                  | **\$42**                      |
+| **Redis**      | ElastiCache Redis (\~\$0.031/hr principal) → \~\$23/mo               | EC2 with Redis: **\$35.40**                  | Docker Redis on ECS: **\$42** |
+| **Memcached**  | ElastiCache Memcached \~ \$0.025/hr → **\$18**                       | EC2 memcached: **\$35.40**                   | ECS memcached: **\$42**       |
+| **OpenSearch** | Amazon OpenSearch Service (t3.medium.data) \~\$0.08/hr → **\$58/mo** | EC2: **\$35.40** + EBS (+\$10) = **\$45.40** | **\$54**                      |
+| **InfluxDB**   | RDS not supported; EC2: **\$35.40** + EBS: \~\$45.40                 | Same as EC2                                  | **\$54**                      |
+| **Neo4j**      | RDS not supported; EC2: **\$35.40** + EBS (+\$10) = **\$45.40**      | Same as EC2                                  | **\$54**                      |
