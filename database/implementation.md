@@ -55,3 +55,21 @@ Assuming:
 | **OpenSearch** | Amazon OpenSearch Service (t3.medium.data) \~\$0.08/hr → **\$58/mo** | EC2: **\$35.40** + EBS (+\$10) = **\$45.40** | **\$54**                      |
 | **InfluxDB**   | RDS not supported; EC2: **\$35.40** + EBS: \~\$45.40                 | Same as EC2                                  | **\$54**                      |
 | **Neo4j**      | RDS not supported; EC2: **\$35.40** + EBS (+\$10) = **\$45.40**      | Same as EC2                                  | **\$54**                      |
+
+### ⚡ Estimated Response Time Comparison (in milliseconds)
+
+Assuming:
+
+- All services are in the **same AWS region & VPC** with **security best practices** (VPC networking, IAM, encryption in transit).
+- Simple query = basic key/value get or indexed `SELECT`.
+
+| Database       | EC2 → DB   | ECS → DB   | Lambda → DB (warm) | Lambda → DB (cold) | Notes                                                |
+| -------------- | ---------- | ---------- | ------------------ | ------------------ | ---------------------------------------------------- |
+| **MySQL**      | \~1–3 ms   | \~1–3 ms   | \~3–6 ms           | \~200–600 ms       | Fast over TCP; Lambda cold start hurts               |
+| **PostgreSQL** | \~1–4 ms   | \~1–4 ms   | \~4–8 ms           | \~200–600 ms       | TLS handshake + JDBC adds minor overhead             |
+| **MariaDB**    | \~1–3 ms   | \~1–3 ms   | \~3–6 ms           | \~200–600 ms       | Same TCP behavior as MySQL                           |
+| **Redis**      | \~0.5–1 ms | \~0.5–1 ms | \~1–3 ms           | \~200–500 ms       | Extremely low latency in warm path                   |
+| **Memcached**  | \~0.5–1 ms | \~0.5–1 ms | \~1–3 ms           | \~200–500 ms       | Minimal protocol overhead                            |
+| **OpenSearch** | \~5–10 ms  | \~5–10 ms  | \~10–15 ms         | \~250–700 ms       | JSON/HTTP overhead makes it slower                   |
+| **InfluxDB**   | \~2–4 ms   | \~2–4 ms   | \~4–7 ms           | \~250–700 ms       | Fast if data is in memory; depends on storage engine |
+| **Neo4j**      | \~4–7 ms   | \~4–7 ms   | \~6–10 ms          | \~300–800 ms       | Bolt protocol adds some latency                      |
