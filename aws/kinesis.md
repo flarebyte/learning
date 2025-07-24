@@ -22,6 +22,24 @@
 | **Multi-region replication**     | ⚠️ Not native                                     | ✅ With Kafka MirrorMaker                   |
 | **Cost**                         | ✅ Pay-per-usage                                  | ⚠️ Pay for brokers (EC2-style billing)      |
 
+**Lambda vs KCL-Based App**
+
+| Feature                      | **AWS Lambda**                                     | **KCL-Based App** (e.g., Java/Python)                 |
+| ---------------------------- | -------------------------------------------------- | ----------------------------------------------------- |
+| **Deployment**               | Fully managed (serverless)                         | You manage the runtime (EC2, ECS, etc.)               |
+| **Scalability**              | Auto-scales with traffic                           | You must scale manually (or with autoscaling rules)   |
+| **Throughput**               | Limited per shard (default: 2 MB/sec/shard)        | Full shard throughput, fine-grained control           |
+| **Batching**                 | Yes (batch size & window configurable)             | Yes (more configurable and optimized)                 |
+| **Checkpointing**            | Automatic or manual via Lambda event               | Fully manual via DynamoDB                             |
+| **Enhanced Fan-Out Support** | ✅ Yes                                             | ✅ Yes                                                |
+| **Startup latency**          | Cold start possible (\~100ms+)                     | Long-running; no cold starts                          |
+| **Error handling & retries** | Built-in retry, DLQ, and error handling            | You build your own logic                              |
+| **Monitoring**               | CloudWatch logs & metrics                          | Custom or CloudWatch if instrumented                  |
+| **Runtime languages**        | All Lambda-supported (Node.js, Python, Java, etc.) | Java, Python (via MultiLangDaemon), others            |
+| **Latency**                  | Higher (\~100ms–1s)                                | Lower (\~10–50ms possible)                            |
+| **Cost model**               | Pay-per-request + duration                         | EC2 or container costs (fixed or dynamic)             |
+| **Use case fit**             | Simpler, event-driven, low-maintenance             | High throughput, low latency, advanced control needed |
+
 ## Cost
 
 **Assumptions:**
