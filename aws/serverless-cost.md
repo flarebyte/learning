@@ -16,6 +16,18 @@
 | Step Functions                  | State Transitions (Express)              | \$1.000           | Pricing increases with payload size                   | \~25–100 ms           |
 | DynamoDB                        | Read Request Units (Strongly Consistent) | \$1.250           | Double cost vs eventually consistent reads            | \~5–20 ms             |
 | DynamoDB                        | Write Request Units                      | \$6.500           | Storage, backups, and streams are extra               | \~5–20 ms             |
+| DynamoDB                        | Read Request Units (strong)              | $0.125            | 4 KB per RRU; eventual ≈ 0.5×; txn 2×                 | ~5–20 ms              |
+| DynamoDB                        | Write Request Units                      | $0.625            | 1 KB per WRU; txn 2×; GSIs add writes                 | ~5–20 ms              |
+| DynamoDB                        | GetItem (1 KB, strong)                   | $0.125            | 1 RRU/op; eventual ≈ $0.0625                          | ~5–20 ms              |
+| DynamoDB                        | GetItem (4 KB, strong)                   | $0.125            | 1 RRU/op                                              | ~5–20 ms              |
+| DynamoDB                        | GetItem (10 KB, strong)                  | $0.375            | 3 RRUs/op                                             | ~5–20 ms              |
+| DynamoDB                        | GetItem (100 KB, strong)                 | $3.125            | 25 RRUs/op                                            | ~5–20 ms              |
+| DynamoDB                        | GetItem (400 KB, strong)                 | $12.50            | 100 RRUs/op                                           | ~5–20 ms              |
+| DynamoDB                        | Query (~10 × 1 KB items, strong)         | $0.375            | ~10 KB read → ~3 RRUs/op                              | ~5–40 ms              |
+| DynamoDB                        | Query (~10 × 4 KB items, strong)         | $1.25             | ~40 KB → ~10 RRUs/op                                  | ~5–40 ms              |
+| DynamoDB                        | Query (~100 × 4 KB items, strong)        | $12.50            | ~400 KB → ~100 RRUs/op                                | ~10–60+ ms            |
+| DynamoDB                        | Scan (1 MB page, eventual — default)     | $16.00            | ~128 RRUs/page                                        | ~20–200+ ms/page      |
+| DynamoDB                        | Scan (1 MB page, strong)                 | $32.00            | ~256 RRUs/page                                        | ~20–200+ ms/page      |
 | API Gateway                     | REST API Call                            | \$3,500.000       | Caching, logging, and custom domain add cost          | \~100–300 ms          |
 | API Gateway                     | HTTP API Call                            | \$100.000         | Authorizers, throttling, and TLS add cost             | \~20–100 ms           |
 | Secrets Manager                 | GetSecretValue                           | \$5.000           | Plus \$0.40 per secret/month storage                  | \~20–200 ms           |
