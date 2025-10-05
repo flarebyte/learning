@@ -112,3 +112,96 @@ Go leans toward **composition over inheritance**, favors **interfaces over hiera
 - **Methods**: Functions with a receiver; used for behavior on structs
 - **Error Handling**: No exceptions; handle `error` values explicitly
 - **Paradigm**: Procedural at heart, with a dash of OOP and FP — designed for clarity, simplicity, and maintainability
+
+## Multiple Return Values Patterns
+
+### Value and Success Flag
+
+Instead of returning an error, a boolean flag is returned to indicate success:
+
+```go
+val, ok := myMap["key"]
+```
+
+This is commonly seen in:
+
+- **Maps:** `value, ok := m["key"]`
+- **Channel receives:** `v, ok := <-ch` to detect if the channel is closed.
+
+### Function and Cleanup (Defer)
+
+Returning a cleanup function for deferred calls:
+
+```go
+f, cleanup, err := os.CreateTemp("", "example")
+if err != nil {
+    return err
+}
+defer cleanup()
+```
+
+This pattern is popular for:
+
+- Temporary file handling
+- Resource acquisition (files, network, etc.)
+- Locking mechanisms
+
+### Unpacking Struct-like Data
+
+Returning multiple values instead of a struct for simplicity:
+
+```go
+func getCoordinates() (float64, float64) {
+    return 12.34, 56.78
+}
+lat, long := getCoordinates()
+```
+
+Common when:
+
+- The data is conceptually paired or small
+- Avoiding unnecessary struct overhead
+
+### Deconstructing Composite Results
+
+For example, parsing:
+
+```go
+name, age, err := parseUser(input)
+```
+
+This avoids needing to define a `User` struct when the results are only used transiently.
+
+### Swapping Values
+
+Utility-style functions:
+
+```go
+func swap(a, b int) (int, int) {
+    return b, a
+}
+```
+
+Not super common in production code, but useful in algorithms or utils.
+
+### Database Query Results
+
+Many database libraries return multiple values such as:
+
+```go
+rows, err := db.Query("SELECT * FROM users")
+```
+
+Or:
+
+```go
+id, err := result.LastInsertId()
+```
+
+### Optional Values
+
+Returning an optional value and a `bool`:
+
+```go
+value, found := maybeGetValue()
+```
