@@ -38,3 +38,80 @@ At its core, uv unifies many of the roles played by tools like pip, virtualenv, 
 - **One-off tools:** `uvx black`, `uvx ruff`, `uvx pytest` — similar to `npx` usage.
 - **Global installs:** Use `uv tool install <pkg>` and ensure your `~/.local/bin` is in `PATH`.
 - **Lockfiles:** `uv.lock` ensures reproducible installs (like `package-lock.json`).
+
+## `pyproject.toml` Schema Overview
+
+### `[project]`
+
+Defines the project’s core metadata — similar to `package.json` in npm.
+
+| Key                     | Type           | Description                                                |
+| ----------------------- | -------------- | ---------------------------------------------------------- |
+| `name`                  | string         | Package name (must be unique on PyPI).                     |
+| `version`               | string         | Current version of the package.                            |
+| `description`           | string         | Short description of the project.                          |
+| `readme`                | string / table | Path to README file or inline content.                     |
+| `authors`               | list of tables | Each with `name` and optional `email`.                     |
+| `license`               | string / table | License identifier or path to file.                        |
+| `requires-python`       | string         | Minimum Python version (e.g., `>=3.10`).                   |
+| `dependencies`          | list           | Runtime dependencies (e.g., `["requests>=2.0"]`).          |
+| `optional-dependencies` | table          | Named groups of optional deps (e.g., `test = ["pytest"]`). |
+| `keywords`              | list           | Search keywords for packaging.                             |
+| `classifiers`           | list           | Trove classifiers describing compatibility.                |
+| `urls`                  | table          | Links like homepage, repository, documentation.            |
+| `scripts`               | table          | CLI entry points (`"cmd" = "module:function"`).            |
+
+---
+
+### `[build-system]`
+
+Specifies how the project should be built and which backend to use.
+
+| Key             | Type   | Description                                                                        |
+| --------------- | ------ | ---------------------------------------------------------------------------------- |
+| `requires`      | list   | Build-time dependencies (e.g., `["setuptools", "wheel"]`).                         |
+| `build-backend` | string | The build backend module (e.g., `"setuptools.build_meta"` or `"hatchling.build"`). |
+
+---
+
+### `[tool.<toolname>]`
+
+Tool-specific configuration — flexible and extensible.
+
+| Example Tool | Section                     | Purpose                                                                   |
+| ------------ | --------------------------- | ------------------------------------------------------------------------- |
+| `uv`         | `[tool.uv]`                 | Project-specific settings for uv (e.g., indexes, groups).                 |
+| `black`      | `[tool.black]`              | Code formatting preferences.                                              |
+| `ruff`       | `[tool.ruff]`               | Linter configuration.                                                     |
+| `pytest`     | `[tool.pytest.ini_options]` | Pytest runtime options.                                                   |
+| `poetry`     | `[tool.poetry]`             | Poetry’s equivalent of `[project]` for dependency and package management. |
+
+---
+
+### `[tool.<toolname>.scripts]`
+
+Defines command-line entry points managed by a tool.
+Example:
+
+```toml
+[tool.uv.scripts]
+start = "myapp.cli:main"
+```
+
+---
+
+### `[tool.<toolname>.group.<name>]`
+
+Used to declare dependency groups or environments.
+
+```toml
+[tool.uv.group.dev]
+dependencies = ["pytest", "black"]
+```
+
+---
+
+### `[project.scripts]` vs `[tool.<toolname>.scripts]`
+
+- `[project.scripts]`: standard Python entry points (portable).
+- `[tool...]`: tool-specific and may not apply outside that tool.
