@@ -7,13 +7,19 @@ Anthropic,Claude 3.5 Haiku,~~20B,~~40 GB,200000,$0.25 / $1.25,Smaller lightweigh
 Anthropic,Claude 3 Opus,~~2T,~~4.0 TB,1000000,Premium tier,Top Claude; speculative large scale
 Google,Gemini 2.0 Flash,Proprietary,N/A,1000000,$0.10 / $0.40,Low cost; fast inference tier
 Google,Gemini 2.0 Pro,Proprietary,N/A,1000000,$0.625 / $2.50,Full version; unknown parameter count
-Mistral,Mistral Small,~~7B,~~14 GB,32000,$0.15 / $0.60,Optimized for low latency
-Mistral,Mistral Large 2,123B,~246 GB,128000,$2 / $6,Public 123B model
-Cohere,Command R+,~~52B,~~104 GB,128000,$2.5 / $10,Retrieval augmented model; parameter count unconfirmed
-Meta,Llama 3.1 8B,8B,~16 GB,128000,N/A,Open model; local capable
-Meta,Llama 3.1 70B,70B,~140 GB,128000,N/A,Open large model; 70B parameters
+Mistral,Mistral Small,7B,~14 GB,32000,$0.15 / $0.60,Optimized for low latency; fits 16 GB GPU
+Mistral,OpenMixtral 8x7B,46.7B active (~12.9B per forward),~~24 GB,64000,N/A,Mixture of Experts; fits on 24 GB GPU with quantization
+Mistral,Mistral 12B,12B,~24 GB,32000,N/A,Newest midsize open model; suitable for 24 GB GPU
+Meta,Llama 3.1 8B,8B,~16 GB,128000,N/A,Open model; fits 16 GB GPU easily
+Meta,Llama 3.1 13B,13B,~26 GB,128000,N/A,Open model; fits 24–32 GB GPU with quantization
+Meta,Llama 3.1 70B,70B,~140 GB,128000,N/A,Open large model; needs multi GPU or 80 GB card
 Meta,Llama 3.1 405B,405B,~810 GB,128000,N/A,Massive open model; cloud hosted
+Cohere,Command R+,~~52B,~~104 GB,128000,$2.5 / $10,Retrieval augmented model; parameter count unconfirmed
 AWS Bedrock,Claude 3.5 Sonnet (via Bedrock),~~175B,~~350 GB,1000000,Same as Anthropic,Anthropic model hosted on AWS
 AWS Bedrock,Mistral Large 2 (via Bedrock),123B,~246 GB,128000,Same as Mistral,Mistral model hosted on AWS
 AWS Bedrock,Llama 3.1 70B (via Bedrock),70B,~140 GB,128000,Varies,Llama model hosted on AWS
 xAI,Grok 2,Proprietary,N/A,128000,Unknown,Available only via X Premium Plus; no public data
+Stability AI,Stable LM 2 12B,12B,~24 GB,64000,N/A,Open model focused on efficient inference
+TII,Falcon 11B,11B,~22 GB,32000,N/A,Open model; runs on 24 GB GPU
+TII,Falcon 7B,7B,~14 GB,32000,N/A,Older but efficient 7B model
+Google,Flan T5 XXL,11B,~22 GB,32768,N/A,Instruction tuned; fits on 24 GB GPU with quantization
