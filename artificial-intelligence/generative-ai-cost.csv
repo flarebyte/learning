@@ -1,0 +1,19 @@
+Provider,Model,Model Size (params),Approx VRAM (FP16),Max Token Window,Cost per 1M Input / Output (USD),Notes
+OpenAI,GPT-4.1,~~1.8T,~~3.6 TB,1000000,$1.25 / $10,Flagship model; rumored trillion scale MoE architecture
+OpenAI,GPT-4o-mini,~~8B,~~16 GB,128000,$0.30 / $1.20,Economy model; roughly Llama-3.1 8B scale
+OpenAI,GPT-3.5-turbo,~~175B,~~350 GB,16000,$0.50 / $1.50,Comparable scale to GPT-3; likely dense
+Anthropic,Claude 3.5 Sonnet,~~175B,~~350 GB,1000000,$3 / $15,Mid tier Claude; rumored 175B parameters
+Anthropic,Claude 3.5 Haiku,~~20B,~~40 GB,200000,$0.25 / $1.25,Smaller lightweight version
+Anthropic,Claude 3 Opus,~~2T,~~4.0 TB,1000000,Premium tier,Top Claude; speculative large scale
+Google,Gemini 2.0 Flash,Proprietary,N/A,1000000,$0.10 / $0.40,Low cost; fast inference tier
+Google,Gemini 2.0 Pro,Proprietary,N/A,1000000,$0.625 / $2.50,Full version; unknown parameter count
+Mistral,Mistral Small,~~7B,~~14 GB,32000,$0.15 / $0.60,Optimized for low latency
+Mistral,Mistral Large 2,123B,~246 GB,128000,$2 / $6,Public 123B model
+Cohere,Command R+,~~52B,~~104 GB,128000,$2.5 / $10,Retrieval augmented model; parameter count unconfirmed
+Meta,Llama 3.1 8B,8B,~16 GB,128000,N/A,Open model; local capable
+Meta,Llama 3.1 70B,70B,~140 GB,128000,N/A,Open large model; 70B parameters
+Meta,Llama 3.1 405B,405B,~810 GB,128000,N/A,Massive open model; cloud hosted
+AWS Bedrock,Claude 3.5 Sonnet (via Bedrock),~~175B,~~350 GB,1000000,Same as Anthropic,Anthropic model hosted on AWS
+AWS Bedrock,Mistral Large 2 (via Bedrock),123B,~246 GB,128000,Same as Mistral,Mistral model hosted on AWS
+AWS Bedrock,Llama 3.1 70B (via Bedrock),70B,~140 GB,128000,Varies,Llama model hosted on AWS
+xAI,Grok 2,Proprietary,N/A,128000,Unknown,Available only via X Premium Plus; no public data
