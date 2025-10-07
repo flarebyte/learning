@@ -18,6 +18,10 @@ Cohere,Command R+,~~52B,~~104 GB,128000,$2.5 / $10,Retrieval augmented model; pa
 AWS Bedrock,Claude 3.5 Sonnet (via Bedrock),~~175B,~~350 GB,1000000,Same as Anthropic,Anthropic model hosted on AWS
 AWS Bedrock,Mistral Large 2 (via Bedrock),123B,~246 GB,128000,Same as Mistral,Mistral model hosted on AWS
 AWS Bedrock,Llama 3.1 70B (via Bedrock),70B,~140 GB,128000,Varies,Llama model hosted on AWS
+AWS Bedrock,Meta Llama 2 Chat 13B,13B,~26 GB,4096,$0.75 / $1.00,Official Bedrock on demand pricing
+AWS Bedrock,Meta Llama 2 Chat 70B,70B,~140 GB,4096,$1.95 / $2.56,Official Bedrock on demand pricing
+AWS Bedrock,Meta Llama 3 8B,8B,~16 GB,~~8192,$0.40 / $0.60,Rates reported by industry trackers; verify in your region
+AWS Bedrock,Meta Llama 3.3 Instruct 70B,70B,~140 GB,~~128000,$0.72 / $0.72,Illustrative rate shown in AWS ML blog example; confirm in console
 xAI,Grok 2,Proprietary,N/A,128000,Unknown,Available only via X Premium Plus; no public data
 Stability AI,Stable LM 2 12B,12B,~24 GB,64000,N/A,Open model focused on efficient inference
 TII,Falcon 11B,11B,~22 GB,32000,N/A,Open model; runs on 24 GB GPU
