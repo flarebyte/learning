@@ -91,5 +91,26 @@ Different algorithms combine these pieces in unique ways.
 ### Takeaway
 
 > The more complex the planning algorithm, the more **infrastructure** and **compute cost** it requires — but also the higher its **reasoning depth, adaptability, and autonomy**.
->
+
 > Most real-world production agents today sit around **ReAct + Reflexion hybrid territory**, while **ToT** and **Graph-of-Thought** architectures are emerging in advanced research and enterprise multi-agent systems.
+
+## Planning Algorithms — Implementation Summary
+
+| **Algorithm**                         | **Prompting** 🧾                                                            | **Controller / Logic** ⚙️                                         | **Data Structures** 🧮                        | **Persistence / Database** 🗄️                      | **Special Components** 🔧                                                     |
+| ------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------- |
+| **1. Chain-of-Thought (CoT)**         | Few-shot or “think step-by-step” prompt; single model call                  | None (handled inline by LLM)                                      | None                                          | None (context only)                                | Optional verifier (secondary prompt or test)                                  |
+| **2. ReAct (Reason + Act)**           | Structured prompt with `Thought:` / `Action:` / `Observation:` tags         | Iterative loop / FSM controller managing actions and observations | Scratchpad (list or JSON log of steps)        | In-memory only (ephemeral)                         | Tool registry (function map), stop criteria, error handling                   |
+| **3. Plan-and-Execute**               | Two prompts: one for plan creation, one for subtask execution               | Planner + worker controller; task scheduler                       | Task queue / task graph                       | Optional artifact store (Redis, S3, DB)            | Replanner, task dispatcher, step success evaluator                            |
+| **4. Reflexion**                      | Base reasoning prompt + reflection prompt (“analyze what went wrong/right”) | Two-phase pipeline: execution then reflection loop                | Run log, reflection record (text or JSON)     | Vector DB or doc store (FAISS, Weaviate, Pinecone) | Reflection retriever, decay/pruning scheduler                                 |
+| **5. Tree-of-Thought (ToT)**          | Prompt to generate multiple reasoning branches (“produce N thoughts”)       | Search controller (BFS/DFS/beam search)                           | Tree or graph nodes, priority queue           | Optional KV store for node states                  | Scoring/evaluation function, heuristic selector, budget manager               |
+| **6. Graph-of-Thought / Multi-Agent** | Role-specific prompts per agent; coordination prompt for routing            | Graph orchestrator (message passing, routing rules)               | Directed acyclic graph (DAG) or message queue | Shared vector DB + doc store (cross-agent context) | Router, consensus evaluator, message bus (Redis/Kafka/NATS), governance layer |
+
+---
+
+### 🧩 Key Takeaways
+
+- **Prompting** is universal — every algorithm depends on specialized prompt design.
+- **Controllers** grow in complexity: from none (CoT) → loop (ReAct) → planner (Plan-Execute) → orchestration (Graph-of-Thought).
+- **Data structures** evolve from simple logs → queues → trees → graphs.
+- **Persistence** appears first with Reflexion (memory) and expands with multi-agent systems.
+- **Special components** (evaluators, routers, schedulers) are where systems gain autonomy and reliability.
