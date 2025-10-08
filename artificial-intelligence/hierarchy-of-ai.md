@@ -28,3 +28,37 @@ Each stage adds a layer of intelligence and autonomy:
 - **Agents** act.
 - **Multi-agents** collaborate.
 - **Autonomous systems** _think long-term_.
+
+## What Are Planning Algorithms in LLM Agents?
+
+> **Planning algorithms** are _control strategies_ that sit **outside** the language model and determine how to use its reasoning over multiple steps.
+
+They define **how the agent breaks down a goal**, **chooses actions**, and **adapts based on results**.
+
+Think of them as the **cognitive architecture** of an agent — deciding _how it reasons_ and _when to act_.
+
+---
+
+## The Core Anatomy of a Planning Algorithm
+
+Every planning algorithm (ReAct, ToT, etc.) typically has these building blocks:
+
+| Component                      | Description                                          |
+| ------------------------------ | ---------------------------------------------------- |
+| **Goal Interpreter**           | Understands the user’s intent or objective           |
+| **Reasoning Engine (the LLM)** | Generates thoughts, hypotheses, or subgoals          |
+| **Planner / Controller**       | Decides which step to take next (based on reasoning) |
+| **Executor**                   | Performs the action (e.g., run tool, call API)       |
+| **Evaluator / Reflector**      | Judges if the outcome is correct or needs revision   |
+| **Memory / Context Manager**   | Stores intermediate results or lessons for reuse     |
+
+Different algorithms combine these pieces in unique ways.
+
+| Algorithm                  | Key Mechanism                           | Pros                           | Cons                          | Example Systems         |
+| -------------------------- | --------------------------------------- | ------------------------------ | ----------------------------- | ----------------------- |
+| **Chain-of-Thought (CoT)** | Linear step-by-step reasoning           | Simple, powerful               | No actions or feedback        | GPT-4, Claude 3         |
+| **ReAct**                  | Thought–Action–Observation loop         | Tool use, iterative correction | Can loop indefinitely         | LangChain, AutoGPT      |
+| **Tree-of-Thought**        | Branching reasoning paths               | Explores alternatives          | Computationally heavy         | DeepMind ToT, o1 models |
+| **Reflexion**              | Self-evaluation after actions           | Learns from mistakes           | Needs strong evaluation logic | AutoGPT v2, CrewAI      |
+| **Plan-and-Execute**       | High-level planning + subtask execution | Structured and stable          | Rigid, less adaptive          | LangChain, OpenDevin    |
+| **Graph-of-Thought**       | Multi-agent graph reasoning             | Parallel, collaborative        | Complex orchestration         | AutoGen, ChatDev        |
