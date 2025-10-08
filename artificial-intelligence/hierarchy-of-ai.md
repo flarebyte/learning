@@ -62,3 +62,34 @@ Different algorithms combine these pieces in unique ways.
 | **Reflexion**              | Self-evaluation after actions           | Learns from mistakes           | Needs strong evaluation logic | AutoGPT v2, CrewAI      |
 | **Plan-and-Execute**       | High-level planning + subtask execution | Structured and stable          | Rigid, less adaptive          | LangChain, OpenDevin    |
 | **Graph-of-Thought**       | Multi-agent graph reasoning             | Parallel, collaborative        | Complex orchestration         | AutoGen, ChatDev        |
+
+## Planning Algorithms — Comparative Matrix
+
+| **Algorithm**                         | **Implementation Complexity** ⚙️                                            | **Result Quality / Reasoning Power** 🧠                          | **Pros** ✅                                                                                      | **Cons** ⚠️                                                                                   | **Typical Use-Cases**                                     |
+| ------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| **1. Chain-of-Thought (CoT)**         | ⭐ _Very Low_ — just prompting (no external logic)                          | ⭐⭐ _Moderate_ — good for linear reasoning, fails on long tasks | - Easiest to implement<br>- Fast, single model call<br>- Works well for factual or step problems | - No feedback or correction<br>- No actions/tools<br>- Context-limited                        | Math, logic, factual Q&A, reasoning benchmarks            |
+| **2. ReAct (Reason + Act)**           | ⭐⭐ _Low–Medium_ — simple control loop + tool registry                     | ⭐⭐⭐ _High_ — good reasoning + tool use                        | - Enables tool use & iteration<br>- Transparent reasoning trace<br>- Flexible & modular          | - Risk of infinite loops<br>- Needs controller code<br>- Can degrade with noisy tools         | Search-based tasks, RAG agents, code execution bots       |
+| **3. Plan-and-Execute**               | ⭐⭐⭐ _Medium_ — requires planner + executor + task queue                  | ⭐⭐⭐ _High_ — consistent, structured reasoning                 | - Clear separation of concerns<br>- Parallelizable subtasks<br>- Stable & predictable            | - Less adaptive mid-plan<br>- Needs re-planning logic<br>- More overhead                      | Workflow automation, data pipelines, multi-step coding    |
+| **4. Reflexion**                      | ⭐⭐⭐⭐ _Medium–High_ — adds evaluation + memory components                | ⭐⭐⭐⭐ _Very High_ — self-improving, fewer repeated errors     | - Learns from mistakes<br>- Improves over time<br>- Works across sessions                        | - Needs strong evaluation<br>- May store “bad lessons”<br>- Requires vector DB/memory         | Long-running agents, autonomous researchers, dev copilots |
+| **5. Tree-of-Thought (ToT)**          | ⭐⭐⭐⭐ _High_ — needs branching controller + scoring logic                | ⭐⭐⭐⭐ _Very High_ — explores multiple reasoning paths         | - Excellent reasoning depth<br>- Can recover from local errors<br>- Transparent exploration      | - Expensive (many model calls)<br>- Needs good heuristics<br>- Harder to debug                | Complex reasoning, theorem proving, strategy games        |
+| **6. Graph-of-Thought / Multi-Agent** | ⭐⭐⭐⭐⭐ _Very High_ — requires orchestration, message passing, consensus | ⭐⭐⭐⭐⭐ _Highest_ — scalable, collaborative reasoning         | - Handles complex, decomposed tasks<br>- Enables specialization<br>- Parallel & fault-tolerant   | - Heavy infra & sync cost<br>- Hard to monitor/debug<br>- Requires governance & safety layers | Multi-agent systems, AI teams, enterprise orchestration   |
+
+---
+
+## 🧠 Summary Insights
+
+| **Rank by Simplicity**                  | CoT → ReAct → Plan-Execute → Reflexion → ToT → Graph-of-Thought     |
+| --------------------------------------- | ------------------------------------------------------------------- |
+| **Rank by Result Quality**              | CoT < ReAct < Plan-Execute < Reflexion ≈ ToT < Graph-of-Thought     |
+| **Best All-Around Trade-off**           | ⭐ **ReAct** — practical balance between complexity and performance |
+| **Best for Long-Term Learning Agents**  | ⭐ **Reflexion**                                                    |
+| **Best for Complex Reasoning / Search** | ⭐ **Tree-of-Thought**                                              |
+| **Best for Large, Modular AI Systems**  | ⭐ **Graph-of-Thought / Multi-Agent**                               |
+
+---
+
+### Takeaway
+
+> The more complex the planning algorithm, the more **infrastructure** and **compute cost** it requires — but also the higher its **reasoning depth, adaptability, and autonomy**.
+>
+> Most real-world production agents today sit around **ReAct + Reflexion hybrid territory**, while **ToT** and **Graph-of-Thought** architectures are emerging in advanced research and enterprise multi-agent systems.
