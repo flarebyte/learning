@@ -114,3 +114,56 @@ Different algorithms combine these pieces in unique ways.
 - **Data structures** evolve from simple logs → queues → trees → graphs.
 - **Persistence** appears first with Reflexion (memory) and expands with multi-agent systems.
 - **Special components** (evaluators, routers, schedulers) are where systems gain autonomy and reliability.
+
+## 1. Definitions
+
+| Concept              | Description                                                                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Stateless prompt** | Each model call is **independent** — it doesn’t include any conversational or historical context. The model “forgets” everything after the call.                           |
+| **Stateful prompt**  | Each model call **includes accumulated context** (conversation history, reasoning trace, memory) so the model can reason with continuity.                                  |
+| **External state**   | Information stored _outside_ the model (e.g., in a vector DB, cache, JSON, or task log). It’s **not automatically known to the model** unless re-injected into the prompt. |
+
+---
+
+## 2. Prompt Statefulness Across Planning Algorithms
+
+| **Algorithm**                      | **Prompt Type**                                                        | **When Stateless**                                                                                         | **When Stateful**                                                         | **State Storage Mechanism (if external)**                                  |
+| ---------------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **Chain-of-Thought (CoT)**         | _Stateless_ by default                                                 | Always — each reasoning happens within one model call                                                      | Only if you manually append previous reasoning (rare)                     | N/A (no external state)                                                    |
+| **ReAct (Reason + Act)**           | Typically _stateful_ (history of Thought–Action–Observation in prompt) | Can be stateless **if** each iteration reloads only minimal previous context (e.g., last observation only) | Normally stateful, since reasoning depends on past steps                  | External JSON log or in-memory scratchpad (controller re-injects context)  |
+| **Plan-and-Execute**               | Mixed — planner is _stateless_, executors are _semi-stateful_          | Stateless for planning phase (fresh prompt)                                                                | Stateful for executing subtasks (prompt includes plan context or results) | Task queue or DB storing subtask metadata                                  |
+| **Reflexion**                      | Two stages: execution (can be stateful) + reflection (stateless)       | Stateless during reflection phase (analyzes one run at a time)                                             | Stateful during execution (accumulates reasoning)                         | Vector DB or document store for reflection memory                          |
+| **Tree-of-Thought (ToT)**          | _Stateless per node_, state maintained externally                      | Always stateless — each node’s prompt regenerated from stored path                                         | N/A (reasoning path is reassembled externally)                            | Tree or graph structure (controller reconstructs context before each call) |
+| **Graph-of-Thought / Multi-Agent** | _Mostly stateless per agent call_                                      | Usually stateless — each agent reads context from shared DB before generating                              | Can be stateful within agent if conversation history retained             | Shared vector DB / message bus (agents rehydrate context each call)        |
+
+---
+
+## 3. Rule of Thumb — When to Keep Prompts Stateful vs. Stateless
+
+| **Goal**                              | **Prompt Strategy**                                | **Why**                                   |
+| ------------------------------------- | -------------------------------------------------- | ----------------------------------------- |
+| Short, isolated reasoning             | Stateless                                          | Saves tokens; no need for history         |
+| Multi-step reasoning within same goal | Stateful                                           | Keeps continuity of logic                 |
+| Long-term autonomous behavior         | Externally stateful (stateless prompt + memory DB) | Avoids context overflow; scalable         |
+| Multi-agent collaboration             | Stateless (per agent) + shared external memory     | Enables parallel, distributed reasoning   |
+| Debugging or deterministic replay     | Stateless                                          | Each step reproducible from logged inputs |
+
+## 4. Architectural Trade-offs
+
+| Aspect                        | **Stateful Prompt**        | **Stateless Prompt + External Memory** |
+| ----------------------------- | -------------------------- | -------------------------------------- |
+| Context continuity            | ✅ Built-in                | ⚙️ Rehydrated manually                 |
+| Scalability                   | ❌ Limited by token window | ✅ Scales with external storage        |
+| Cost (tokens per step)        | High                       | Lower                                  |
+| Determinism / reproducibility | Lower (context drift)      | Higher (explicit context)              |
+| Parallelization               | Harder                     | Easier (independent calls)             |
+| Debugging                     | Simple traces              | More complex (multi-source context)    |
+
+---
+
+### 🧠 TL;DR
+
+> - **Prompt = what the model sees right now.**
+> - **State = what the system remembers overall.**
+> - If you rebuild context every step from external memory → **stateless prompt, stateful system**.
+> - If you append reasoning inline → **stateful prompt, short-lived state**.
