@@ -1,0 +1,6 @@
+instance,cpu_mem_gib,hardware_info
+g6.xlarge,16,"NVIDIA L4 (Ada); inference-focused"
+g5.2xlarge,32,"NVIDIA A10G (Ampere); solid general GPU"
+g6e.4xlarge,128,"NVIDIA L40S (Ada); higher VRAM"
+p5.4xlarge,256,"NVIDIA H100 (Hopper); top single-GPU"
+p4d.24xlarge,1152,"8× NVIDIA A100 40GB; NVLink + EFA"
