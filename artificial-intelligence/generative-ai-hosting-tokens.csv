@@ -1,6 +1,6 @@
-instance,cpu_mem_gib,hardware_info
-g6.xlarge,16,"NVIDIA L4 (Ada); inference-focused"
-g5.2xlarge,32,"NVIDIA A10G (Ampere); solid general GPU"
-g6e.4xlarge,128,"NVIDIA L40S (Ada); higher VRAM"
-p5.4xlarge,256,"NVIDIA H100 (Hopper); top single-GPU"
-p4d.24xlarge,1152,"8× NVIDIA A100 40GB; NVLink + EFA"
+instance,cpu_mem_gib,hardware_info,llama31_13b_tokens_per_sec
+g6.xlarge,16,"NVIDIA L4 (Ada); inference-focused","~12–20"
+g5.2xlarge,32,"NVIDIA A10G (Ampere); solid general GPU","~18–35"
+g6e.4xlarge,128,"NVIDIA L40S (Ada); higher VRAM","~26–30"
+p5.4xlarge,256,"NVIDIA H100 (Hopper); top single-GPU","~55–60"
+p4d.24xlarge,1152,"8× NVIDIA A100 40GB; NVLink + EFA","~350–450 (aggregate, batched)"
