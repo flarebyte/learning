@@ -186,3 +186,24 @@ When your dataset grows — like **thousands or millions** of vectors — compar
 | **Production readiness**                  | REST/gRPC APIs, high availability                          |
 | **Live updates (insert/delete)**          | Good for dynamic content (e.g., user uploads)              |
 | **Namespaces & filters**                  | Segment different types of embeddings (e.g., docs vs tags) |
+
+### Vector Database Comparison
+
+| Feature                               | **Pinecone**                                         | **Weaviate**                                        | **Qdrant**                                     | **Milvus**                                         | **FAISS**                                     |
+| :------------------------------------ | :--------------------------------------------------- | :-------------------------------------------------- | :--------------------------------------------- | :------------------------------------------------- | :-------------------------------------------- |
+| **Implementation Language**           | Proprietary (backend in Go + Rust)                   | Go + GraphQL + REST                                 | Rust                                           | C++ + Go (core in C++)                             | C++ (with Python bindings)                    |
+| **Number of Supported Algorithms**    | Limited (proprietary ANN variants, not customizable) | Multiple (HNSW, flat, hybrid search, BM25)          | HNSW, IVF, PQ (in progress)                    | IVF, HNSW, ANNOY, DiskANN, PQ                      | Many (Flat, IVF, PQ, HNSW, LSH, custom)       |
+| **Setup Complexity (Local / Docker)** | ❌ N/A – managed only                                | ⚙️ Moderate (Docker, env vars, schema setup)        | ⚙️ Easy (single Docker image, minimal config)  | ⚙️ Moderate–High (multiple services, dependencies) | 🧠 Manual (library integration, no DB server) |
+| **Schema Complexity**                 | None (collection-based)                              | Complex (requires schema with data types + classes) | Simple (collections + payload schema optional) | Moderate (collection + index definitions)          | None (pure vector structures in code)         |
+| **Ease of Administration**            | ⭐ Very Easy (fully managed SaaS)                    | 🧩 Medium (needs monitoring & schema mgmt)          | ✅ Easy (REST API, UI dashboard)               | ⚙️ Complex (cluster config, scaling components)    | 🧠 Developer-managed (no admin UI)            |
+| **Ease of Use (Developer UX)**        | 🚀 Very High (simple API + Python client)            | 👍 High (rich clients, GraphQL/REST)                | 👍 High (Python, REST, gRPC APIs)              | ⚙️ Moderate (requires setup & config)              | 🧑‍💻 Moderate–Low (library-level use only)      |
+
+---
+
+### 🧩 Summary Notes
+
+- **Pinecone** → Best for teams that want zero ops, fast production use, and SaaS simplicity.
+- **Weaviate** → Great for hybrid search (semantic + keyword) and structured data.
+- **Qdrant** → Lightweight, fast, Rust-based, easiest self-hosted option.
+- **Milvus** → Enterprise-grade, scalable, best for billion-scale deployments.
+- **FAISS** → Excellent for research or embedded use, not a standalone service.
