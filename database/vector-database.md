@@ -226,8 +226,44 @@ When your dataset grows — like **thousands or millions** of vectors — compar
 
 ---
 
-### ✅ Summary: When Qdrant adds value
+### Summary: When Qdrant adds value
 
 - If you are simply prototyping or running small scale (< 10K‐100K vectors) retrieval tasks, the SimpleVectorStore may suffice.
 - But if you anticipate: many millions of vectors, need for fast query latency, metadata filtering, hybrid search (dense + sparse), custom distance metrics, deployment in production with scaling & fault-tolerance — then moving to Qdrant (or another production-grade vector DB) makes a lot of sense.
 - The gaps filled by Qdrant are primarily in **scale, performance, deployment & operational robustness, advanced query/filtering capabilities**, rather than just “store some embeddings and query them”.
+
+| Input                                  | Meaning                                       | Drives                         |
+| :------------------------------------- | :-------------------------------------------- | :----------------------------- |
+| **Dense vectors (number + dimension)** | Count and length of your embeddings           | Core memory & disk use         |
+| **Sparse vectors (number + elements)** | Number of sparse embeddings and their density | Extra memory for hybrid search |
+| **Payload indexes**                    | Optional structured metadata                  | Indexing overhead              |
+
+## Dense vs. Sparse Vector Models — Comparison Overview
+
+| **Model / Provider**                        | **Type**                    |     **Dimensionality**      | **Typical # of Vectors** |     **# of Elements per Vector**     | **Open Source / Paid** | **Typical Usage / Description**                                              |
+| :------------------------------------------ | :-------------------------- | :-------------------------: | :----------------------: | :----------------------------------: | :--------------------- | :--------------------------------------------------------------------------- |
+| **OpenAI `text-embedding-3-small`**         | Dense                       |            1,536            |         10³–10⁷          | 1,536 (dense: every dim has a value) | Paid (OpenAI API)      | General-purpose text embeddings for semantic search, retrieval, or RAG.      |
+| **OpenAI `text-embedding-3-large`**         | Dense                       |            3,072            |         10³–10⁷          |                3,072                 | Paid                   | High-accuracy semantic representation for large-scale retrieval and ranking. |
+| **Cohere `embed-english-v3.0`**             | Dense                       |            1,024            |         10³–10⁷          |                1,024                 | Paid                   | Strong for English semantic similarity, RAG, document search.                |
+| **SentenceTransformers `all-MiniLM-L6-v2`** | Dense                       |             384             |         10³–10⁶          |                 384                  | Open Source            | Lightweight model for semantic text similarity, FAQs, and clustering.        |
+| **InstructorXL (HuggingFace)**              | Dense                       |             768             |         10³–10⁶          |                 768                  | Open Source            | Embeddings guided by task-specific instructions; good for retrieval tasks.   |
+| **CLIP (OpenAI / LAION)**                   | Dense                       |             512             |         10⁵–10⁷          |                 512                  | Open Source            | Multimodal embeddings (image–text similarity, search, classification).       |
+| **Google Universal Sentence Encoder**       | Dense                       |             512             |         10³–10⁶          |                 512                  | Free / Open API        | Sentence-level semantic embeddings for text classification or similarity.    |
+| **BM25 / TF-IDF (e.g., Elasticsearch)**     | Sparse                      |     varies (~50K vocab)     |         10³–10⁸          |        50–300 non-zero terms         | Open Source            | Classic keyword-based retrieval; sparse vector per document/token frequency. |
+| **SPLADE / SPLADE++ (HuggingFace)**         | Sparse                      |    30K–100K (vocab size)    |         10³–10⁷          |        50–300 non-zero terms         | Open Source            | Neural sparse retriever; combines semantic power and interpretability.       |
+| **ColBERT / ColBERTv2**                     | Hybrid (multi-vector dense) |      128–768 per token      |         10³–10⁶          |    Variable (~50 vectors per doc)    | Open Source            | Dense per-token embeddings for late-interaction retrieval.                   |
+| **OpenAI Hybrid (dense + keyword)**         | Dense + Sparse              |    1,536 + sparse terms     |         10³–10⁷          |                varies                | Paid                   | Hybrid retrieval combining semantic and keyword signals.                     |
+| **Qdrant Example (dense + sparse hybrid)**  | Both                        | 768 dense + variable sparse |         10⁵–10⁷          |       100–500 sparse elements        | Open Source            | Example hybrid vector store setup in Qdrant or Weaviate for RAG pipelines.   |
+
+---
+
+### 🧩 Notes
+
+- **Dense vectors**: Every element represents a learned numerical feature (no zeros). Memory = `#vectors × dimension × 4 bytes`.
+- **Sparse vectors**: Mostly zeros; only nonzero elements (word features) are stored, reducing space and improving interpretability.
+- **Hybrid search**: Combines dense semantic and sparse lexical signals for more accurate retrieval (supported by Qdrant, Weaviate, etc.).
+- **Typical scales**:
+
+  - Small projects: 10³–10⁴ vectors
+  - Medium apps / internal RAG: 10⁵–10⁶
+  - Enterprise-scale search: 10⁷–10⁹
