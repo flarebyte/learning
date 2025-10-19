@@ -267,3 +267,29 @@ When your dataset grows — like **thousands or millions** of vectors — compar
   - Small projects: 10³–10⁴ vectors
   - Medium apps / internal RAG: 10⁵–10⁶
   - Enterprise-scale search: 10⁷–10⁹
+
+| **Unit of Text**           | **What the Vector Represents**                     | **When You’d Use It**                                                |
+| :------------------------- | :------------------------------------------------- | :------------------------------------------------------------------- |
+| **Word-level vector**      | Embedding of “green”, “light”, “love”, etc.        | Useful in NLP or linguistic analysis — uncommon in retrieval.        |
+| **Sentence-level vector**  | Embedding of “He had hoped for Daisy’s love.”      | Common in sentence similarity or small QA systems.                   |
+| **Paragraph-level vector** | Embedding of a descriptive passage or short scene. | Typical unit for retrieval-augmented generation (RAG).               |
+| **Chapter-level vector**   | Encodes broader topic or tone of a chapter.        | Useful for coarse-grained semantic navigation or clustering.         |
+| **Book-level vector**      | One single summary embedding for the entire book.  | Used in recommendation systems or thematic similarity between books. |
+
+So —
+
+> In most real-world retrieval setups, **each vector represents a “chunk” of text (a paragraph or section)** — and collectively, those embeddings _map out_ the book’s themes.
+
+---
+
+### Example
+
+Let’s say we embed two paragraphs:
+
+1. “Gatsby gazed at the green light across the bay.”
+2. “He longed for a past that could never return.”
+
+Both get high-dimensional vectors — close to each other in space because they share the emotional and thematic context of _nostalgia and longing_.
+
+The model didn’t label them with “theme = nostalgia,”
+but their **proximity in vector space** reflects that shared meaning.
