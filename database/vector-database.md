@@ -293,3 +293,56 @@ Both get high-dimensional vectors — close to each other in space because they 
 
 The model didn’t label them with “theme = nostalgia,”
 but their **proximity in vector space** reflects that shared meaning.
+
+### Practical Heuristics for Choosing Chunk Size
+
+| **Use Case**                              | **Typical Chunk Size (tokens)** | **Why**                                        |
+| :---------------------------------------- | :-----------------------------: | :--------------------------------------------- |
+| FAQ or sentence-level semantic similarity |             50–100              | Each chunk = one idea; precision > context.    |
+| Document / article retrieval (RAG)        |             200–500             | Enough for one coherent paragraph or section.  |
+| Long-form reasoning or summarization      |            500–1,000            | Larger context helps preserve continuity.      |
+| Legal / scientific papers                 |             300–800             | Sentences are longer and context matters more. |
+| Code or technical text                    |             50–200              | Short functions; high precision needed.        |
+
+> 🔹 **Rule of thumb:**
+> Aim for **semantic completeness** — each chunk should express a _coherent thought_ that makes sense on its own, without excessive overlap or fragmentation.
+
+---
+
+### Why Overlap Matters
+
+You often add **sliding-window overlap** (e.g. 10–20%) between chunks so you don’t “cut” ideas in half.
+
+Example:
+
+```
+Chunk 1: tokens 0–300
+Chunk 2: tokens 250–550
+```
+
+This ensures context continuity and avoids losing meaning at chunk boundaries.
+
+### Model Constraints Matter
+
+Each embedding model has its **maximum token input size**:
+
+- OpenAI `text-embedding-3-small`: up to 8,192 tokens
+- Older models (e.g., `text-embedding-ada-002`): 8,192 tokens
+- SentenceTransformers: usually 512–1024 tokens max
+
+Chunk beyond that, and your text will be truncated or rejected.
+
+So your chunk size must always be **≤ model’s max input length**.
+
+---
+
+### In Practice
+
+**Most production-grade RAG systems** today use:
+
+- **Chunk size:** ~200–400 tokens
+- **Overlap:** 10–20%
+- **Granularity unit:** paragraph or section
+- **Vector type:** one embedding per chunk
+
+That’s the “sweet spot” for balanced semantic retrieval.
