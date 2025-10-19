@@ -207,3 +207,27 @@ When your dataset grows — like **thousands or millions** of vectors — compar
 - **Qdrant** → Lightweight, fast, Rust-based, easiest self-hosted option.
 - **Milvus** → Enterprise-grade, scalable, best for billion-scale deployments.
 - **FAISS** → Excellent for research or embedded use, not a standalone service.
+
+## SimpleVectorStore vs Qdrant
+
+| **Feature**                          | **SimpleVectorStore**                                                  | **Qdrant** _(adds / extends)_                                                                     |
+| :----------------------------------- | :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
+| **Storage & Persistence Model**      | In-memory dictionary, optionally persisted to disk via a JSON file.    | Full vector database with on-disk persistence, efficient storage, and memory-mapped IO.           |
+| **Scale & Performance**              | Suitable for small datasets or prototypes; no specialized indexing.    | Designed for large-scale, high-performance vector search with optimized indexes and caching.      |
+| **Indexing / Search Algorithms**     | Brute-force or simple cosine similarity search only.                   | Advanced ANN algorithms (HNSW, IVF, PQ), multiple distance metrics, hybrid and quantized indexes. |
+| **Metadata / Payload Filtering**     | Limited; simple metadata may be stored but not indexed for filtering.  | Rich payload/metadata filtering with indexed fields and conditional filters.                      |
+| **Hybrid (Sparse + Dense) Search**   | Dense vectors only; no hybrid capabilities.                            | Supports hybrid search combining dense and sparse (keyword) representations.                      |
+| **Filtering / Query Richness**       | Basic top-k similarity search; minimal filtering.                      | Complex filtering logic (AND/OR/NOT), faceting, and multi-field conditions.                       |
+| **Deployment / Operations**          | Runs locally within Python; zero configuration, not production-grade.  | Production-ready DB with Docker deployment, clustering, sharding, and replication.                |
+| **Distance Metrics / Customization** | Typically cosine similarity only; little customization.                | Multiple metrics (cosine, Euclidean, dot, Manhattan) and index tuning parameters.                 |
+| **Persistence & Data Management**    | Can persist to a JSON file, but not optimized for very large datasets. | Efficient, durable on-disk storage with background indexing, updates, and deletions.              |
+| **Insert / Update / Delete Support** | Basic operations; not scalable for millions of entries.                | Full CRUD operations with high performance and near real-time updates.                            |
+| **Observability / Admin Tools**      | None; operates as a lightweight in-memory store.                       | Provides REST API, Web UI dashboard, metrics, and integration with monitoring tools.              |
+
+---
+
+### ✅ Summary: When Qdrant adds value
+
+- If you are simply prototyping or running small scale (< 10K‐100K vectors) retrieval tasks, the SimpleVectorStore may suffice.
+- But if you anticipate: many millions of vectors, need for fast query latency, metadata filtering, hybrid search (dense + sparse), custom distance metrics, deployment in production with scaling & fault-tolerance — then moving to Qdrant (or another production-grade vector DB) makes a lot of sense.
+- The gaps filled by Qdrant are primarily in **scale, performance, deployment & operational robustness, advanced query/filtering capabilities**, rather than just “store some embeddings and query them”.
