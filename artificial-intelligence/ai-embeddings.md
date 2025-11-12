@@ -44,3 +44,20 @@ _(MTEB = Massive Text Embedding Benchmark; scores normalized to 0–100 for inte
 - 🧠 **E5-Mistral** and **bge-m3** currently top open-source leaderboards and are the best starting points for serious local RAG setups.
 - 🪶 **MiniLM** and **Instructor** models are lightweight options for laptops or serverless deployments.
 - 🔐 Local models ensure **full data privacy**, unlike cloud APIs.
+
+## Performances of Local vs API Embeddings
+
+| Dimension                          | Local (Open-Source Models)                                                                            | API (Commercial Providers like OpenAI, Google, Voyage)                                         |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Accuracy (MTEB / Retrieval)**    | ~85–95% of OpenAI `text-embedding-3-small`; top models like bge-m3, E5-Mistral can approach `3-large` | OpenAI / Gemini / Voyage lead by ~5–10 MTEB points; better multilingual and domain consistency |
+| **Latency (per 1K texts)**         | Depends on hardware; CPU ≈ 500–2000 ms, GPU ≈ 50–200 ms                                               | Cloud GPU-optimized; typically 50–100 ms regardless of size; batch highly parallelized         |
+| **Throughput / Scaling**           | Scales linearly with hardware; local parallelism limited to your GPU(s)                               | Elastic scaling; effectively infinite throughput via API batching                              |
+| **Cost**                           | Free after hardware cost; local inference ≈ $0 per token                                              | $0.02–$0.15 / 1M tokens; linear with usage                                                     |
+| **Privacy / Compliance**           | 100% on-prem; no data leaves system                                                                   | Data sent to vendor (though often not logged); may breach strict compliance zones              |
+| **Maintenance**                    | You manage model updates, vector normalization, hardware drivers                                      | Fully managed — always latest, stable embeddings                                               |
+| **Multilingual Quality**           | Good for bge-m3 / LaBSE (~60–70 MTEB multilingual)                                                    | Excellent — OpenAI, Gemini, Voyage handle 30+ languages with balanced quality                  |
+| **Context Adaptation**             | Requires fine-tuning or prompt engineering                                                            | Built-in adaptability; large training diversity                                                |
+| **Vector Dimension / Flexibility** | Typically fixed (e.g. 768 – 1024 dims)                                                                | Adjustable (e.g. OpenAI up to 3072; down-sampling supported)                                   |
+| **Energy Efficiency**              | Compute-intensive locally                                                                             | Offloaded to optimized cloud infra                                                             |
+| **Ecosystem Integration**          | Hugging Face, LangChain, LlamaIndex; full control                                                     | Tight integration with vector DBs, RAG APIs, analytics tools                                   |
+| **Reliability / Uptime**           | Depends on your server                                                                                | 99.9% SLA on major clouds                                                                      |
